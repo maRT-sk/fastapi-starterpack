@@ -1,0 +1,40 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-toml
+        name: (Basic) Validate TOML files
+      - id: check-executables-have-shebangs
+        name: (Basic) Check executables for shebangs
+      - id: check-shebang-scripts-are-executable
+        name: (Basic) Ensure shebang scripts are executable
+      - id: end-of-file-fixer
+        name: (Basic) Fix missing end-of-file newline
+      - id: trailing-whitespace
+        name: (Basic) Remove trailing whitespace
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.2
+    hooks:
+      - id: ruff
+        args: ["--diff"]
+        name: (Ruff) Show lint diffs
+      - id: ruff
+        args: ["--fix"]
+        name: (Ruff) Auto-fix lint issues
+      - id: ruff-format
+        name: (Ruff) Format code
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - pydantic
+          - fastapi
+          - loguru
+          - sqlmodel
+          - types-toml
+        args:
+          - --config-file=pyproject.toml
+        name: (MyPy) Static type-checking

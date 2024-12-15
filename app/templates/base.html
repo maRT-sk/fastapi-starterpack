@@ -1,0 +1,64 @@
+{% with version=get_version("ver_") %}  {# Ensures the client fetches the latest static files after #}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <!-- Basic metadata -->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible"
+              content="IE=edge">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0">
+        {% block extra_metadata %}{% endblock %}
+
+        <!-- Dynamic title block -->
+        <title>FastApi StarterPack {% block title %}{% endblock %}</title>
+
+        <!-- Stylesheet and favicon -->
+        <link rel="stylesheet"
+              href="{{ url_for('static', path='/css/styles.css') }}?v={{ version }}">
+        <link rel="icon"
+              type="image/x-icon"
+              href="{{ url_for('static', path='/images/favicon.ico') }}?v={{ version }}">
+        {% block extra_css %}{% endblock %}
+
+        <!-- JavaScript Libraries -->
+        <!-- Alpine.js and alpine plugins -->
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+
+        <!-- HTMX -->
+        <script src="https://unpkg.com/htmx.org@1.x.x"></script>
+
+        {% block extra_js %}{% endblock %}
+    </head>
+
+    <body
+            {# Manages dark mode and layout with Alpine.js and Tailwind CSS, syncing theme with localStorage and user preferences.#}
+            {# NOTE: alpine attributes below will likely be moved from base.html to a better place #}
+            {# NOTE: needs testing and may require adjustments #}
+            x-cloak
+            x-data="{ darkMode: localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches }"
+            x-init="$watch('darkMode', value => localStorage.setItem('theme', value ? 'dark' : 'light'))"
+            class="overflow-x-hidden h-screen grid grid-rows-[auto,1fr]"
+            :class="{ 'dark': darkMode }">
+    <!-- Navigation Bar -->
+    {% include 'core/nav.html' %}
+    <!-- Main Body Content -->
+    <div class="bg-gray-100 dark:bg-gray-700">
+        {% block body %}
+        {% endblock %} </div>
+    {% include 'core/footer.html' %}
+    </body>
+
+    <!-- After Body Content -->
+    {% block after_body_content %}
+    {% endblock %}
+
+    </html>
+{% endwith %}

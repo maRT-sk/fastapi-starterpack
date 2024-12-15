@@ -1,0 +1,74 @@
+[project]
+name = "fastapi-starterpack"
+version = "0.0.1"
+description = "FastAPI StarterPack"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.14.0",
+    "asyncpg>=0.30.0",
+    "fastapi[all]>=0.115.6",
+    "loguru>=0.7.3",
+    "psycopg2>=2.9.10",
+    "pydantic[email]>=2.10.3",
+    "sqladmin[full]>=0.20.1",
+    "sqlmodel>=0.0.22",
+    "toml>=0.10.2",
+    "types-toml>=0.10.8.2",
+    "uvicorn==0.21.1",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13.0",
+    "pre-commit>=4.0.1",
+    "ruff>=0.8.3",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle - PEP 8 style checks (coding style issues)
+    "F", # pyflakes - Detects syntax errors and potential issues like undefined names
+    "I", # isort - Checks and sorts import statements
+    "UP", # pyupgrade - Automatically upgrades syntax to the latest Python features
+    "A", # flake8-builtins - Avoids misuse and redefinition of Python built-ins
+    "COM", # flake8-commas - Enforces consistent use of trailing commas in data structures
+    "Q", # flake8-quotes - Enforces consistent use of single or double quotes in strings
+    "PERF", # Perflint - Provides suggestions for code performance improvements
+    "RUF100", # Ruff-specific rule - Detects unused `# noqa` comments
+    "C90", # mccabe - Measures cyclomatic complexity to identify overly complex code
+    "N", # pep8-naming - Enforces PEP 8 naming conventions (class and variable names)
+    "PL", # pylint - Provides comprehensive code analysis for quality, style, and logical errors
+    "SIM", # flake8-simplify - Identifies and suggests simplifications for common patterns
+    "B", # flake8-bugbear - Highlights likely bugs and performance issues in code
+    "C4", # flake8-comprehensions - Suggests improvements in comprehension usage
+    "PTH", # flake8-use-pathlib - Encourages the use of 'pathlib' over 'os' for file paths
+]
+ignore = [
+    "COM812", # to avoid unexpected behavior when used with the formatte
+    "B008", # Ignore B008 - Avoid function calls in argument defaults
+]
+
+[tool.ruff.lint.isort]
+force-single-line = true  # Force each import to be on its own line, avoiding grouped imports
+
+[tool.ruff.lint.mccabe]
+max-complexity = 14  # Set the maximum allowed McCabe complexity score to 14, controlling function complexity
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"  # Enforce the Google Python Style Guide for docstrings
+
+[tool.mypy]
+files = ["app/"]
+python_version = "3.12"
+strict = true
+disallow_untyped_defs = true
+namespace_packages = true
+pretty = true
+check_untyped_defs = true
+warn_unused_ignores = false
+disallow_subclassing_any = false

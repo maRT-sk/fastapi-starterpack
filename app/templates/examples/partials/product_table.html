@@ -1,0 +1,37 @@
+<section class="container mx-auto">
+    <div class="overflow-x-auto mt-6">
+        <table class="min-w-full border border-gray-200 divide-y divide-gray-200 dark:divide-gray-700 dark:border-gray-700">
+            <thead class="bg-gray-50 dark:bg-gray-800">
+            <tr>
+                <th class="py-3 px-4 text-sm font-medium text-left text-gray-700 dark:text-gray-300">ID</th>
+                <th class="py-3 px-4 text-sm font-medium text-left text-gray-700 dark:text-gray-300">Name</th>
+                <th class="py-3 px-4 text-sm font-medium text-left text-gray-700 dark:text-gray-300">Price</th>
+                <th class="py-3 px-4 text-sm font-medium text-left text-gray-700 dark:text-gray-300">Quantity</th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+
+            {% for product in products %}
+                <tr>
+                    <td class="py-4 px-4 text-sm text-gray-700 dark:text-gray-300">{{ loop.index }}</td>
+                    <td class="py-4 px-4 text-sm text-gray-700 dark:text-gray-300">{{ product.name }}</td>
+                    <td class="py-4 px-4 text-sm text-gray-700 dark:text-gray-300">
+                        {{ "%.2f"|format(product.price) }} €
+                    </td>
+                    <td class="py-4 px-4 text-sm text-gray-700 dark:text-gray-300">{{ product.quantity }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4"
+                        class="py-4 px-4 text-sm text-gray-700 dark:text-gray-300 text-center">
+                        <strong>No products were found in the database.</strong> <br>
+                        This is just for demonstration purposes, so please add some via the API endpoint or directly in
+                        the database.
+                        More logic like this is coming soon, including the ability to add products via the frontend.
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>

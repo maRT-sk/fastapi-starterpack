@@ -30,7 +30,7 @@ alembic downgrade <revision_identifier>
 
 ## Alembic using the provided Justfile
 
-For a more streamlined process, you can perform migrations and database upgrades using the provided **Justfile**.  
+For a more streamlined process, you can perform migrations and database upgrades using the provided **Justfile**.
 To apply all migrations and upgrade the database, run:
 
 ```bash

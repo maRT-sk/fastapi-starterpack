@@ -34,9 +34,9 @@ def alembic_up(c: Context) -> None:
         raise SystemExit(1)
 
     # Create Alembic migration revision
-    logging.info(f"Creating migration with message: '{migration_message}'...")
+    logging.info(f'Creating migration with message: "{migration_message}"...')
     try:
-        c.run(f"uv run alembic revision --autogenerate -m '{migration_message}'", pty=is_pty)
+        c.run(f'uv run alembic revision --autogenerate -m "{migration_message}"', pty=is_pty)
         logging.info("Migration created successfully.")
     except Exception as e:
         logging.error(f"Failed to create migration. Aborting. Error: {e}")

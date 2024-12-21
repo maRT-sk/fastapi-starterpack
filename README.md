@@ -1,44 +1,52 @@
 # FastAPI StarterPack
 
-> An all-in-one blueprint and starter kit for building full-stack web applications with FastAPI.
+An all-in-one blueprint and starter kit for building full-stack web applications with FastAPI.
 
-Currently in its very early development stage, suggestions and insights are highly encouraged!  
-A contributing guide will be provided soon.
+
+> [!WARNING]
+> This project is in its early development stage.
+
+Your feedback and contributions are highly valued! A contributing guide will be available soon.
 
 ## Overview
 
 **FastAPI StarterPack** is a foundation for building async full-stack web applications.
-Engineered to simplify development while ensuring scalability, it offers a robust and organized starting
-point for your projects.
+Engineered to simplify development, it offers a robust and organized starting point for your projects, which can be
+tailored to specific needs.
 
 ### Technology Stack
 
-- **FastAPI/Starlette**:  A modern framework for building high-performance asynchronous web services.
-- **Jinja2**:  A fast and flexible templating engine for server-side rendering.
-- **Tailwind CSS**: A utility-first CSS framework for responsive design.
-- **Alpine.js**: A lightweight JavaScript framework for declarative UI interactions.
-- **HTMX.js**:  A simple library that simplifies AJAX and dynamic content updates.
-- **PostgreSQL**: A powerful and reliable relational database, integrated using **SQLModel** package.
-- **Alembic**: A simple yet powerful tool for managing database migrations.
+- **FastAPI/Starlette**: High-performance asynchronous web framework.
+- **Jinja2**: Server-side templating engine.
+- **Tailwind CSS**: Utility-first CSS framework for modern UI design.
+- **Alpine.js**: JavaScript framework for composing behavior directly in your markup.
+- **HTMX.js**:  JavaScript framework that simplifies AJAX and dynamic content updates.
+- **PostgreSQL**: Reliable relational database, integrated with **SQLModel**.
+- **Alembic**: Database migration management.
 - **UV**: An extremely fast Python package and project manager.
 - **MyPy and Ruff**: Ensures static type checking, linting, and code formatting.
 
 ## Prerequisites
 
-Before getting started, ensure you have the following installed:
+Ensure the following are installed:
 
 - **Python >=3.12**
-- **[uv >=0.5.9](https://docs.astral.sh/uv/getting-started/installation/)**: An extremely fast Python package and
-  project manager.
-- **[just >=1.37.0](https://just.systems/man/en/packages.html)** (Optional): A handy way to save and run
-  project-specific commands.
-    - **fzf >=0.56.3** (Optional): Used with `just` for an interactive recipe chooser.
+- **[uv >=0.5.9](https://docs.astral.sh/uv/getting-started/installation/)**: Package and project manager.
 
-## How to Run
+## Getting Started
+
+### Clone the Repository
+
+Clone the project to your local machine:
+
+```bash
+git clone https://github.com/maRT-sk/fastapi-starterpack.git
+cd fastapi-starterpack
+```
 
 ### Install Dependencies
 
-Set up the project by installing the required dependencies (including dev dependencies) using the following command:
+Synchronize and install the required dependencies:
 
 ```bash
 uv sync
@@ -46,81 +54,124 @@ uv sync
 
 ### Start the Application
 
-If you're using the application locally, make sure to create a `.env` file in the root directory.
-You can use the `.env.template` file as a reference to properly configure your environment variables.
+1. Create a .env file in the project root directory. Use .env.template as a reference for required variables.
 
-To start the development server, run the following command:
+2. Start the development server:
+    ```bash
+    uv run uvicorn app.main:app --reload --port 8000
+    ```
 
-```bash
-uv run uvicorn app.main:app --reload --port 8000
-```
+The server will run on port 8000 with hot-reload enabled for real-time updates.
 
-This command starts the application on port `8000` with hot-reload enabled,
-allowing you to see code changes in real time.
+### Database Setup
 
-## Setting Up the Database
+Manage the database using Invoke tasks or equivalent manual commands.
 
-The project uses a lightweight command runner `just`, to manage project-specific tasks. In the future, it may be
-replaced. If you prefer not to use the provided Justfile, you can review its contents and run the commands manually.
+1. Create and start a Docker container for PostgreSQL:
 
-Follow these steps to create, initialize, and upgrade the database:
+    ```
+    uvx invoke db-create
+    ```
 
-1. Start a PostgreSQL database instance using Docker:
+2. Apply migrations:
 
-```
-just docker-run-postgres
-```
+    ```
+    uvx invoke alembic-up
+    ```
 
-2. Apply the initial database migration and upgrade the schema:
-
-```
-just alembic-up
-```
-
-You will be prompted to enter a migration message. For the first migration, you can use a message like `initial`.
-This will generate a Python migration file in your Alembic folder. Review this file to ensure it reflects the expected
-database schema.
-Once reviewed, return to the terminal and confirm to proceed with the database upgrade.
+3. Enter a migration message when prompted. For the first migration, use a message like "initial".
+   A Python migration file will be created in the `alembic/versions` folder.
+4. Review the migration file to ensure it reflects the expected database schema.
+   Once satisfied, return to the terminal and confirm by typing "y" to proceed with the database upgrade.
 
 ## Project Structure
 
-_Note: The structure is a work in progress and may evolve as the project develops._
-
-### Explanation of Key Folders and Files
+> [!NOTE]
+> The structure is a work in progress and may evolve as the project develops.
 
 ```
 .
 ├── app/
-│   ├── main.py   # Manages the initialization and configuration of the FastAPI application
-│   ├── core/     # Contains core backend functionality
-│   │   ├── config.py       # Handles application configuration settings
-│   │   ├── database.py     # Manages database connections and ORM setup
-│   │   ├── handler.py      # Implements exception handlers
-│   │   ├── lifespan.py     # Manages application startup and shutdown lifecycle
-│   │   ├── logger.py       # Configure Loguru's logger
-│   │   ├── middleware.py   # Defines custom middleware
-│   │   └── templates.py    # Manages a Jinja2 template environment for the application
-│   ├── models/     # Houses the database models, implemented using SQLModel
-│   ├── routes/     # Defines API endpoints and application routes, automatically gathered
-│   ├── services/   # Defines API endpoints and application routes, automatically gathered
-│   ├── services/   # Encapsulates the business logic of the application
-│   ├── static/     # Directory for static assets such as CSS, JavaScript, and images
-│   └── templates/  # Stores HTML templates written with Jinja2, used for rendering pages
-├── alembic/                  # Contains scripts and configuration for managing database migrations
-├── pyproject.toml            # Configuration file for the Python project, including dependencies and build tools
-├── justfile                  # Task runner file for automating common development commands
-├── .pre-commit-config.yaml   # Configuration file for pre-commit hooks
-└── .env                      # Contains configuration settings for local development
+│   ├── main.py               # Application initialization and configuration
+│   ├── core/                 # Core backend functionality
+│   │   ├── config.py         # Configuration settings
+│   │   ├── database.py       # Database connection and ORM setup
+│   │   ├── handler.py        # Exception handlers
+│   │   ├── lifespan.py       # Application lifecycle management
+│   │   ├── logger.py         # Loguru logger configuration
+│   │   ├── middleware.py     # Custom middleware
+│   │   └── templates.py      # Jinja2 template environment
+│   ├── models/               # Database models (SQLModel)
+│   ├── routes/               # API endpoints and application routes
+│   ├── services/             # Business logic encapsulation
+│   ├── static/               # Static assets (CSS, JavaScript, images)
+│   └── templates/            # HTML templates (Jinja2)
+├── alembic/                  # Database migration scripts
+├── pyproject.toml            # Python project configuration
+├── tasks.py                  # Task automation and project management
+├── .pre-commit-config.yaml   # Pre-commit hooks configuration
+└── .env                      # Local development configuration
 ```
 
-Designed to ensure modularity and maintainability, this structure simplifies scaling and managing the application.
+## Development Tools
 
-### Running Development Tools
+### Tasks
 
-If development dependencies are installed, you can use the following commands to run various code quality and formatting
-checks.
+To view the full list of available tasks, run the following command:
 
-Run linting checks with ruff:
+```bash
+uvx invoke --list
+```
+
+Below is a list of the currently available tasks for project management and automation:
+
+- **`alembic-up`**
+  Creates an Alembic migration with a user-specified message and upgrades the database.
+
+- **`db-create`**
+  Creates and starts a Docker container for PostgreSQL with default credentials from .env file.
+
+- **`db-remove`**
+  Stops and removes the running PostgreSQL Docker container after confirmation.
+
+- **`db-start`**
+  Starts an existing PostgreSQL Docker container.
+
+- **`generate-req`**
+  Generates a `requirements.txt` file from `pyproject.toml`.
+
+- **`tw-install`**
+  Installs Tailwind CSS as a dependency and initializes its configuration file.
+
+- **`tw-watch`**
+  Watches the input CSS file and project files for changes and updates the output CSS file.
+
+- **`check-docker`**
+  Checks if Docker CLI is installed and Docker Desktop is running.
+
+- **`check-node-tools`**
+  Verifies that Node.js tools (`npm` and `npx`) are installed and available in the system PATH.
+
+#### Usage Example
+
+To run a task, use the following command:
+
+```
+uvx invoke <task-name>
+```
+
+For example, to create a PostgreSQL container:
+
+```
+uvx invoke db-create
+```
+
+> [!TIP]
+> Refer to `tasks.py` for detailed implementation.
+
+### Linting and Formatting
+
+Run linting checks:
 
 ```
 uv run ruff check .
@@ -132,11 +183,13 @@ Fix linting issues automatically:
 uv run ruff check . --fix
 ```
 
-Format the code using ruff:
+Format the code:
 
 ```
 uv run ruff format
 ```
+
+### Type Checking
 
 Type-check the code with mypy:
 
@@ -144,41 +197,40 @@ Type-check the code with mypy:
 uv run mypy .
 ```
 
-Run all pre-commit hooks:
+### Pre-commit Hooks
+
+Execute all pre-commit hooks:
 
 ```
 uv run pre-commit run --all-files
 ```
 
-## To-Do List
-
-There are numerous areas that need improvement. Below is a list of tasks and enhancements I aim to address in the
-future. Contributions, suggestions, and ideas are always welcome to help shape this project into something even better!
+## Roadmap
 
 ### Backend Improvements
 
-- **Integrate S3 Object Storage**: Use boto3 to manage static files efficiently.
-- **Admin Interface**: Implement SQLAdmin for managing database models.
+- **Integrate S3 Object Storage**: Use boto3 for efficient static file management.
+- **Admin Interface**: Add SQLAdmin for database management.
 - **Implement Additional Endpoints**: Add more API endpoints to showcase functionality.
-- **Enhance Security**: Integrate authentication, authorization, and rate-limiting features.
-- **Add Caching**: Implement caching example for better performance.
+- **Enhance Security**: Integrate authentication, authorization, and rate limiting.
+- **Caching**: Demonstrate caching strategies for performance optimization.
 
 ### Frontend Enhancements
 
-- **Add Interactive Components**: Use Alpine.js and HTMX.js to create more examples.
+- **Interactive Components**: Use Alpine.js and HTMX.js to create more examples.
 - **Form Validation Examples**: Provide examples of form validation and error handling.
 
 ### Development & Deployment
 
 - **Set Up CI/CD Pipeline**: Configure GitHub Actions for automated deployments and code quality checking.
-- **Production Configurations**: Add deployment configurations.
-- **Project-Specific Commands**: Add new commands and refine existing ones to ensure reliability and efficiency.
+- **Production Configurations**: Add deployment-ready configurations.
+- **Project-Specific Commands**: Refine and extend project-specific task runners.
 
 ### Documentation
 
-- **Enhance the Documentation**: Add detailed instructions for installation, setup, and usage.
-- **Add Examples and Tutorials**: Include practical examples and tutorials.
+- **Enhance the Documentation**: Comprehensive installation, setup, and usage documentation.
+- **Examples and Tutorials**: Include practical examples and tutorials.
 
 ---
 
-Stay tuned for updates! Thank you for your interest! 🙌
+Stay tuned for updates! Your feedback and contributions are highly appreciated. 🙌

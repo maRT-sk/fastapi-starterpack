@@ -1,3 +1,5 @@
+# TODO: Create better examples and avoid using product models.
+
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import Request
@@ -5,9 +7,9 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
-from app.core.database import get_db
+from app.core.database import get_session
 from app.core.templates import main_templates
-from app.models.product import Product
+from app.models.demo.product import Product
 
 router = APIRouter()
 
@@ -21,7 +23,7 @@ async def products(request: Request) -> HTMLResponse:
 
 
 @router.get("/products/partial/product_table", response_class=HTMLResponse)
-async def product_table(request: Request, session: AsyncSession = Depends(get_db)) -> HTMLResponse:
+async def product_table(request: Request, session: AsyncSession = Depends(get_session)) -> HTMLResponse:
     """
     Fetches all products from the database and renders the partial product table HTML template.
     """

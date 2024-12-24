@@ -24,7 +24,7 @@ def render_error_response(
 ) -> Response:
     """Utility to create JSON or HTML responses based on the request's content type."""
     if is_json_response(request.headers):
-        return JSONResponse(status_code=status_code, content={"detail": detail})
+        return JSONResponse(status_code=status_code, content={"detail": detail, "context": context})
     else:
         context = context or {}
         context.update({"request": request, "status_code": status_code, "status_detail": detail})

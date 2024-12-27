@@ -22,7 +22,7 @@ async def handle_validation_exceptions(request: Request, exc: Exception) -> Resp
     if not isinstance(exc, RequestValidationError):  # This should never happen but ensures type safety at runtime
         raise TypeError(f"Unexpected exception type: {type(exc)}. Expected RequestValidationError.") from exc
 
-    log_caught_exception("DEBUG", "Client error - validation exception", exc, request)
+    log_caught_exception("INFO", "Client error - validation exception", exc, request)
     return render_error_response(
         request,
         status_code=400,

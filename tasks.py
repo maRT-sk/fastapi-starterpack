@@ -34,9 +34,9 @@ def alembic_up(c: Context) -> None:
         raise SystemExit(1)
 
     # Create Alembic migration revision
-    logging.info(f"Creating migration with message: '{migration_message}'...")
+    logging.info(f'Creating migration with message: "{migration_message}"...')
     try:
-        c.run(f"uv run alembic revision --autogenerate -m '{migration_message}'", pty=is_pty)
+        c.run(f'uv run alembic revision --autogenerate -m "{migration_message}"', pty=is_pty)
         logging.info("Migration created successfully.")
     except Exception as e:
         logging.error(f"Failed to create migration. Aborting. Error: {e}")
@@ -59,15 +59,31 @@ def alembic_up(c: Context) -> None:
 def check_docker(c: Context) -> None:
     """Check if Docker CLI is installed and Docker Desktop is running."""
     if not shutil.which("docker"):
-        logging.error("Docker CLI is not installed or not in PATH. Install Docker first.")
+        logging.error("Preflight check: Docker CLI is not installed or not in PATH. Install Docker first.")
         raise SystemExit(1)
 
     result_is_docker_running: Result | None = c.run("docker info", warn=True, hide=True, pty=is_pty)
     if not result_is_docker_running or result_is_docker_running.failed:
-        logging.error("Docker Desktop is not running. Please start it and try again.")
+        logging.error("Preflight check: Docker Desktop is not running. Please start it and try again.")
         raise SystemExit(1)
 
-    logging.info("Docker CLI is installed, and Docker Desktop is running.")
+    logging.info("Preflight check:: Docker CLI is installed, and Docker Desktop is running.")
+
+
+@task(pre=[check_docker])
+def check_db_running(c: Context, container_name: str = postgres_container_name) -> None:
+    """Checks if the PostgreSQL Docker container is running locally."""
+    result = c.run(
+        f"docker ps --filter name={container_name} --format '{{{{.Names}}}}'", hide=True, warn=True, pty=is_pty
+    )
+
+    if container_name in result.stdout.strip():
+        logging.info(f"Preflight check: PostgreSQL container '{container_name}' is running.")
+        return
+    else:
+        logging.error(f"Preflight check: PostgreSQL container '{container_name}' is not running.")
+        logging.error("Preflight check: Ensure the container is started with the 'db_start' task.")
+        raise SystemExit(1)
 
 
 @task(pre=[check_docker])
@@ -113,11 +129,11 @@ def db_remove(c: Context, container_name: str = postgres_container_name) -> None
 def check_node_tools(c: Context) -> None:
     """Verifies the availability of Node.js tools (npm and npx)."""
     if not shutil.which("npm"):
-        logging.error("npm is not installed or not in PATH. Install Node.js and npm first.")
+        logging.error("Preflight check: npm is not installed or not in PATH. Install Node.js and npm first.")
         raise SystemExit(1)
 
     if not shutil.which("npx"):
-        logging.error("npx is not installed or not in PATH. Install Node.js and npm first.")
+        logging.error("Preflight check: npx is not installed or not in PATH. Install Node.js and npm first.")
         raise SystemExit(1)
 
 
@@ -149,3 +165,47 @@ def generate_req(c: Context) -> None:
     c.run("uv lock", pty=is_pty)
     c.run("uv pip compile pyproject.toml -o requirements.txt", pty=is_pty)
     logging.info("requirements.txt generated successfully.")
+
+
+@task(pre=[check_db_running])
+def createsuperuser(c: Context) -> None:
+    """Creates a new superuser via the API."""
+    # TODO: Implement proper security mechanisms for this endpoint.
+    import json
+    from http import client
+
+    logging.info("Starting admin user creation process...")
+    username = input("Enter admin username: ").strip()
+    if not username:
+        logging.error("Username cannot be empty. Aborting.")
+        raise SystemExit(1)
+
+    password = input("Enter admin password: ").strip()
+    if not password:
+        logging.error("Password cannot be empty. Aborting.")
+        raise SystemExit(1)
+
+    payload = {
+        "username": username,
+        "full_name": username,
+        "is_active": True,
+        "is_superuser": True,
+        "password": password,
+    }
+
+    conn = client.HTTPConnection("127.0.0.1", 8000)
+    headers = {"Content-Type": "application/json"}
+
+    try:
+        conn.request("POST", "/api/v1/users", body=json.dumps(payload), headers=headers)
+        response = conn.getresponse()
+        data = response.read().decode()
+
+        if response.status == 201:  # noqa: PLR2004
+            print("User created successfully:", json.loads(data))
+        else:
+            print(f"Error {response.status}: {json.loads(data)}")
+    except Exception as e:
+        print("An error occurred:", e)
+    finally:
+        conn.close()

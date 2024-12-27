@@ -3,8 +3,8 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from app.core.database import check_db_ready
 from app.core.database import engine
-from app.core.database import init_db
 from app.core.logger import main_logger
 
 
@@ -14,8 +14,7 @@ async def app_lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     try:
         main_logger.info("Starting application...")
-        await init_db()
-        main_logger.info("Database initialized successfully.")
+        await check_db_ready()
         yield
     except Exception as e:
         main_logger.error(f"Application startup failed: {type(e).__name__}: {str(e)}")

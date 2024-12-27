@@ -5,7 +5,7 @@ from sqlalchemy import pool
 from sqlmodel import SQLModel
 
 from alembic import context
-from app.core.database import DATABASE_URL
+from app.core.config import app_config
 from app.models import import_models_modules
 
 # this is the Alembic Config object, which provides
@@ -64,7 +64,7 @@ def run_migrations_online() -> None:
     """
     connectable = engine_from_config(
         config.get_section(config.config_ini_section) or {},
-        url=DATABASE_URL.replace("postgresql+asyncpg", "postgresql"),
+        url=app_config.DATABASE_URL.replace("postgresql+asyncpg", "postgresql"),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

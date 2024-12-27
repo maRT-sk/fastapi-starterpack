@@ -4,7 +4,9 @@ An all-in-one blueprint and starter kit for building full-stack web applications
 
 
 > [!WARNING]
-> This project is in its early development stage.
+> **This project is in its early development stage.**
+>
+> It is not production-ready and may undergo significant changes. Use it for learning, prototyping, or as a base for custom projects.
 
 Your feedback and contributions are highly valued! A contributing guide will be available soon.
 

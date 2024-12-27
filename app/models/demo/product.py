@@ -1,14 +1,23 @@
-# example models to showcase some functionally; better models will be introduced later
 from sqlmodel import Field
 from sqlmodel import SQLModel
 
 
-class ProductCreate(SQLModel):
+class ProductFields:
+    id: int = Field(default=None, primary_key=True)
     name: str = Field(..., max_length=50)
     price: float = Field(..., gt=0)
     quantity: int = Field(..., ge=0)
 
 
-# Database Model
-class Product(ProductCreate, table=True):
-    id: int = Field(default=None, primary_key=True)
+class ProductCreate(SQLModel):
+    id: int = ProductFields.id
+    name: str = ProductFields.name
+    price: float = ProductFields.price
+    quantity: int = ProductFields.quantity
+
+
+class Product(SQLModel, table=True):
+    id: int = ProductFields.id
+    name: str = ProductFields.name
+    price: float = ProductFields.price
+    quantity: int = ProductFields.quantity

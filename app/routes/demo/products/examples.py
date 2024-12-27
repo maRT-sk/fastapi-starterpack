@@ -14,15 +14,15 @@ from app.models.demo.product import Product
 router = APIRouter()
 
 
-@router.get("/products", response_class=HTMLResponse)
+@router.get("/", response_class=HTMLResponse)
 async def products(request: Request) -> HTMLResponse:
     """
     Home page endpoint that renders main products demo page.
     """
-    return main_templates.TemplateResponse("examples/products.html", {"request": request})
+    return main_templates.TemplateResponse("demo/products/products.html", {"request": request})
 
 
-@router.get("/products/partial/product_table", response_class=HTMLResponse)
+@router.get("/partial/product_table", response_class=HTMLResponse)
 async def product_table(request: Request, session: AsyncSession = Depends(get_session)) -> HTMLResponse:
     """
     Fetches all products from the database and renders the partial product table HTML template.
@@ -30,4 +30,4 @@ async def product_table(request: Request, session: AsyncSession = Depends(get_se
     result = await session.execute(select(Product))
     products = result.scalars().all()
     context = {"products": products}
-    return main_templates.TemplateResponse("examples/partials/product_table.html", {"request": request, **context})
+    return main_templates.TemplateResponse("demo/products/partials/product_table.html", {"request": request, **context})

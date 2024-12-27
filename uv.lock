@@ -226,6 +226,7 @@ dependencies = [
     { name = "pydantic", extra = ["email"] },
     { name = "sqladmin", extra = ["full"] },
     { name = "sqlmodel" },
+    { name = "starlette-admin" },
     { name = "toml" },
     { name = "types-toml" },
     { name = "uvicorn" },
@@ -250,6 +251,7 @@ requires-dist = [
     { name = "pydantic", extras = ["all", "email"], specifier = ">=2.10.3" },
     { name = "sqladmin", extras = ["full"], specifier = ">=0.20.1" },
     { name = "sqlmodel", specifier = ">=0.0.22" },
+    { name = "starlette-admin", specifier = ">=0.14.1" },
     { name = "toml", specifier = ">=0.10.2" },
     { name = "types-toml", specifier = ">=0.10.8.2" },
     { name = "uvicorn", specifier = "==0.21.1" },
@@ -881,6 +883,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/1a/4c/9b5764bd22eec91c4039ef4c55334e9187085da2d8a2df7bd570869aae18/starlette-0.41.3.tar.gz", hash = "sha256:0e4ab3d16522a255be6b28260b938eae2482f98ce5cc934cb08dce8dc3ba5835", size = 2574159 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/96/00/2b325970b3060c7cecebab6d295afe763365822b1306a12eeab198f74323/starlette-0.41.3-py3-none-any.whl", hash = "sha256:44cedb2b7c77a9de33a8b74b2b90e9f50d11fcf25d8270ea525ad71a25374ff7", size = 73225 },
+]
+
+[[package]]
+name = "starlette-admin"
+version = "0.14.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "jinja2" },
+    { name = "python-multipart" },
+    { name = "starlette" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c0/6e/8468ace0ee826dc797c77c7076c5294f4abe78debabb8f8ab7c3e137f0b2/starlette_admin-0.14.1.tar.gz", hash = "sha256:45e2baa3b9a8deec7a6e8ca9295123f648bb0d2070abe68f27193c6d5e32cc38", size = 2099705 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bd/5a/ac9ab9846350b40d73539c9094bf447d7900c586e013011af2a9fe995676/starlette_admin-0.14.1-py3-none-any.whl", hash = "sha256:5b6260d7ed3db455585852d669feb7ed9a8c5f9a1e3d48d21a52912ec37e18f9", size = 2160522 },
 ]
 
 [[package]]

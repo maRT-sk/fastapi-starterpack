@@ -1,3 +1,6 @@
+from collections.abc import AsyncGenerator
+
+from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import select
@@ -6,15 +9,45 @@ from sqlmodel.ext.asyncio.session import AsyncSession  # Importing AsyncSession 
 from app.core.config import app_config
 from app.core.logger import main_logger
 
-# Create an asynchronous engine for the database
-engine = create_async_engine(
-    url=app_config.DATABASE_URL,
-    echo=False,  # Set to True to log all database queries for debugging
-    pool_recycle=1800,  # Refresh (recycle) database connections every 30 minutes to prevent timeouts
-    pool_size=15,  # Number of database connections to keep open and ready for use
-    max_overflow=5,  # Extra connections allowed temporarily if all pooled connections are busy
-    pool_timeout=30,  # Time (in seconds) to wait for a free connection before raising an error
-)
+
+class DatabaseEngineFactory:
+    """Factory to create a database engine with appropriate settings based on the database type."""
+
+    @staticmethod
+    def get_engine(database_url: str) -> AsyncEngine:
+        """Creates and returns an asynchronous database engine based on the database URL."""
+        if database_url.startswith("sqlite"):
+            return DatabaseEngineFactory._create_sqlite_engine()
+        elif database_url.startswith("postgres"):
+            return DatabaseEngineFactory._create_postgres_engine()
+        else:
+            raise NotImplementedError(f"Unsupported database URL: {database_url}")
+
+    @staticmethod
+    def _create_sqlite_engine() -> AsyncEngine:
+        """Create an SQLite database engine."""
+        return create_async_engine(
+            url=app_config.DATABASE_URL,
+            echo=app_config.DB_ECHO,  # Configurable SQL logging
+            connect_args={"check_same_thread": False},  # Required for async SQLite
+        )
+
+    @staticmethod
+    def _create_postgres_engine() -> AsyncEngine:
+        """Create a PostgreSQL database engine with connection pooling."""
+        return create_async_engine(
+            url=app_config.DATABASE_URL,
+            echo=app_config.DB_ECHO,  # Configurable SQL logging
+            pool_recycle=1800,  # Recycle connections every 30 minutes
+            pool_size=15,  # Number of connections to keep open
+            max_overflow=5,  # Allow 5 additional temporary connections
+            pool_timeout=30,  # Wait up to 30 seconds for a connection
+        )
+
+
+# Create the engine dynamically based on the database URL
+engine = DatabaseEngineFactory.get_engine(app_config.DATABASE_URL)
+
 # Create an asynchronous session factory
 async_session_maker = sessionmaker(  # type: ignore
     bind=engine,
@@ -35,7 +68,7 @@ async def check_db_ready() -> None:
         raise RuntimeError("Database initialization failed.") from e
 
 
-async def get_session() -> AsyncSession:
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
     """Provides an async database session and ensures proper lifecycle management."""
     async with async_session_maker() as session:
         main_logger.debug("Async database session created.")
@@ -46,3 +79,6 @@ async def get_session() -> AsyncSession:
             raise  # Re-raise exceptions for proper error handling, TODO: do we really need to raise it?
         finally:
             main_logger.debug("Async database session closed.")
+
+
+__all__ = ["AsyncSession", "get_session", "async_session_maker"]

@@ -19,7 +19,7 @@ class PermissionFields:
 class Permission(SQLModel, table=True):
     id: int = PermissionFields.id
     name: str = PermissionFields.name
-    description: str = PermissionFields.description
+    description: str | None = PermissionFields.description
 
     # Relationships
     users: list["User"] = Relationship(back_populates="user_permissions", link_model=UserPermissionLink)

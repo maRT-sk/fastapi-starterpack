@@ -42,7 +42,7 @@ class MyAuthProvider(AuthProvider):
         return bool(request.session.get("username"))
 
     def get_admin_config(self, request: Request) -> AdminConfig:
-        username: str = request.session.get("username")
+        username: str | None = request.session.get("username")
         custom_app_title = f"Hello {username}!"
         return AdminConfig(app_title=custom_app_title)
 

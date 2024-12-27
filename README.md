@@ -6,7 +6,8 @@ An all-in-one blueprint and starter kit for building full-stack web applications
 > [!WARNING]
 > **This project is in its early development stage.**
 >
-> It is not production-ready and may undergo significant changes. Use it for learning, prototyping, or as a base for custom projects.
+> It is not production-ready and may undergo significant changes. Use it for learning, prototyping, or as a base for
+> custom projects.
 
 Your feedback and contributions are highly valued! A contributing guide will be available soon.
 
@@ -23,7 +24,7 @@ tailored to specific needs.
 - **Tailwind CSS**: Utility-first CSS framework for modern UI design.
 - **Alpine.js**: JavaScript framework for composing behavior directly in your markup.
 - **HTMX.js**:  JavaScript framework that simplifies AJAX and dynamic content updates.
-- **PostgreSQL**: Reliable relational database, integrated with **SQLModel**.
+- **PostgreSQL or SQLite**: Databases integrated with SQLModel for ORM and query management.
 - **Alembic**: Database migration management.
 - **UV**: An extremely fast Python package and project manager.
 - **MyPy and Ruff**: Ensures static type checking, linting, and code formatting.
@@ -67,24 +68,38 @@ The server will run on port 8000 with hot-reload enabled for real-time updates.
 
 ### Database Setup
 
-Manage the database using Invoke tasks or equivalent manual commands.
+This project supports PostgreSQL and SQLite as database backends, providing flexibility for different use cases. 
+Dependencies can be simplified based on the chosen backend:
+- For PostgreSQL, feel free to remove SQLite-related packages with `uv remove aiosqlite`.
+- For SQLite, feel free to  remove PostgreSQL-related packages with `uv remove psycopg2`.
+
+#### For PostgreSQL:
 
 1. Create and start a Docker container for PostgreSQL:
 
-    ```
+    ```bash
     uvx invoke db-create
     ```
 
-2. Apply migrations:
+2. Create and apply migrations:
 
-    ```
+    ```bash
     uvx invoke alembic-up
     ```
 
-3. Enter a migration message when prompted. For the first migration, use a message like "initial".
-   A Python migration file will be created in the `alembic/versions` folder.
-4. Review the migration file to ensure it reflects the expected database schema.
-   Once satisfied, return to the terminal and confirm by typing "y" to proceed with the database upgrade.
+3. Enter a migration message when prompted (e.g., "initial").  
+   Review the generated migration file in `alembic/versions`, and confirm with "Y" to apply the upgrade.
+
+#### For SQLite:
+
+- Similar to PostgreSQL, but **Skip `uvx invoke db-create`**, as SQLite automatically creates the database file.   
+  Simply create and apply migrations:
+
+    ```bash
+    uvx invoke alembic-up
+    ```
+
+  Enter a migration message (e.g., "initial"), check generated file in `alembic/versions`, and confirm to apply the upgrade.
 
 ## Project Structure
 

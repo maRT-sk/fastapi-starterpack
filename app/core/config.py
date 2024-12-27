@@ -24,6 +24,7 @@ class AppConfig:
         self.SECRET_KEY = config("SECRET_KEY", cast=Secret)
         self.ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=CommaSeparatedStrings)
         self.DEBUG = config("DEBUG", cast=bool, default=False)
+        self.DB_ECHO = config("DB_ECHO", cast=bool, default=False)
         self.LOG_FILE = config("LOG_FILE", default="logs/app_{time}.log")
         self.LOG_LEVEL = config("LOG_LEVEL", default="INFO")
         self.DATABASE_URL = config("DATABASE_URL")

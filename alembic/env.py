@@ -31,6 +31,15 @@ target_metadata = SQLModel.metadata
 # ... etc.
 
 
+def get_sync_database_url(async_url: str) -> str:
+    """Converts an async database URL to its synchronous counterpart."""
+    if "sqlite+aiosqlite" in async_url:
+        return async_url.replace("sqlite+aiosqlite", "sqlite")
+    elif "postgresql+asyncpg" in async_url:
+        return async_url.replace("postgresql+asyncpg", "postgresql")
+    raise NotImplementedError(f"Unsupported async database URL: {async_url}")
+
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -64,7 +73,7 @@ def run_migrations_online() -> None:
     """
     connectable = engine_from_config(
         config.get_section(config.config_ini_section) or {},
-        url=app_config.DATABASE_URL.replace("postgresql+asyncpg", "postgresql"),
+        url=get_sync_database_url(app_config.DATABASE_URL),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

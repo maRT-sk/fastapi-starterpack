@@ -35,7 +35,7 @@ class UserCreate(SQLModel):
 
     @field_validator("password")
     @classmethod
-    def title_must_contain_space(cls, v):
+    def password_to_hashed_password(cls, v: str) -> str:
         return hash_password(v)
 
 

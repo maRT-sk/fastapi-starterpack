@@ -1,5 +1,6 @@
 from collections.abc import AsyncGenerator
 
+from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import select
@@ -13,7 +14,7 @@ class DatabaseEngineFactory:
     """Factory to create a database engine with appropriate settings based on the database type."""
 
     @staticmethod
-    def get_engine(database_url: str):
+    def get_engine(database_url: str) -> AsyncEngine:
         """Creates and returns an asynchronous database engine based on the database URL."""
         if database_url.startswith("sqlite"):
             return DatabaseEngineFactory._create_sqlite_engine()
@@ -23,7 +24,7 @@ class DatabaseEngineFactory:
             raise NotImplementedError(f"Unsupported database URL: {database_url}")
 
     @staticmethod
-    def _create_sqlite_engine():
+    def _create_sqlite_engine() -> AsyncEngine:
         """Create an SQLite database engine."""
         return create_async_engine(
             url=app_config.DATABASE_URL,
@@ -32,7 +33,7 @@ class DatabaseEngineFactory:
         )
 
     @staticmethod
-    def _create_postgres_engine():
+    def _create_postgres_engine() -> AsyncEngine:
         """Create a PostgreSQL database engine with connection pooling."""
         return create_async_engine(
             url=app_config.DATABASE_URL,

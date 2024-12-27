@@ -1,8 +1,8 @@
 from invoke import Context  # type: ignore[attr-defined]
 from invoke import task  # type: ignore[attr-defined]
 
-from _tasks import is_pty
-from _tasks import task_logger
+from tasks_def import is_pty
+from tasks_def import task_logger
 
 POSTGRES_CONTAINER_NAME = "my-postgres"
 

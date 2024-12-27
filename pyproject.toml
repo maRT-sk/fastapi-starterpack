@@ -5,6 +5,7 @@ description = "FastAPI StarterPack"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "aiosqlite>=0.20.0",
     "alembic>=1.14.0",
     "asyncpg>=0.30.0",
     "bcrypt>=4.2.1",

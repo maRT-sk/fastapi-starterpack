@@ -32,4 +32,7 @@ async def list_users(session: AsyncSession = Depends(get_session)) -> Sequence[U
     """Retrieve a list of all users from the database."""
     result = await session.exec(select(User))
     all_users = result.all()
-    return all_users
+
+    # Convert User instances to UserRead instances using `model_dump`
+    user_reads = [UserRead(**user.model_dump()) for user in all_users]
+    return user_reads

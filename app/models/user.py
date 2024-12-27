@@ -35,7 +35,7 @@ class UserCreate(SQLModel):
 
     @field_validator("password")
     @classmethod
-    def title_must_contain_space(cls, v):
+    def password_to_hashed_password(cls, v: str) -> str:
         return hash_password(v)
 
 
@@ -45,16 +45,16 @@ class UserRead(SQLModel):
 
 
 class User(SQLModel, table=True):
-    id: int = UserFields.id
-    username: str = UserFields.username
-    email: str | None = UserFields.email
-    full_name: str | None = UserFields.full_name
-    is_active: bool = UserFields.is_active
-    is_superuser: bool = UserFields.is_superuser
-    password: str = UserFields.password
-    created_at: datetime = UserFields.created_at
-    updated_at: datetime | None = UserFields.updated_at
-    last_login: datetime | None = UserFields.last_login
+    id: int = Field(default=None, primary_key=True)
+    username: str = Field(..., max_length=50)
+    email: str | None = Field(default=None, max_length=100)
+    full_name: str | None = Field(default=None, max_length=100)
+    is_active: bool = Field(default=True)
+    is_superuser: bool = Field(default=False)
+    password: str = Field(..., max_length=255)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC).replace(tzinfo=None), nullable=False)
+    updated_at: datetime | None = Field(default=None)
+    last_login: datetime | None = Field(default=None)
 
     # Relationships
     user_permissions: list["Permission"] = Relationship(back_populates="users", link_model=UserPermissionLink)

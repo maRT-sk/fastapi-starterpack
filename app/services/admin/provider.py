@@ -4,9 +4,9 @@ from starlette.responses import Response
 from starlette_admin.auth import AdminConfig
 from starlette_admin.auth import AdminUser
 from starlette_admin.auth import AuthProvider
-from starlette_admin.exceptions import FormValidationError
 from starlette_admin.exceptions import LoginFailed
 
+from app.core.config import app_config
 from app.core.database import async_session_maker
 from app.models.user import User
 from app.services.admin.crypt import verify_password
@@ -29,14 +29,15 @@ class MyAuthProvider(AuthProvider):
             user = await session.exec(select(User).where(User.username == username))
             user = user.first()
 
-            if not user:
-                raise FormValidationError({"username": "User does not exist or is not an admin"})
+            if user and verify_password(password, user.password):
+                request.session.update({"username": user.username})
+                return response
 
-            if not verify_password(password, user.password):
-                raise LoginFailed("Invalid username or password")
+            if username == "admin" and password == str(app_config.STARLETTE_ADMIN_KEY):
+                request.session.update({"username": "admin"})
+                return response
 
-            request.session.update({"username": user.username})
-            return response
+            raise LoginFailed("Invalid username or password")
 
     async def is_authenticated(self, request: Request) -> bool:
         return bool(request.session.get("username"))

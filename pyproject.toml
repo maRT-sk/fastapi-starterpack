@@ -10,13 +10,13 @@ dependencies = [
     "asyncpg>=0.30.0",
     "bcrypt>=4.2.1",
     "fastapi[all]>=0.115.6",
-    "invoke>=2.2.0",
     "loguru>=0.7.3",
     "psycopg2>=2.9.10",
     "pydantic[email]>=2.10.3",
     "sqladmin[full]>=0.20.1",
     "sqlmodel>=0.0.22",
     "starlette-admin>=0.14.1",
+    "taskipy>=1.14.1",
     "toml>=0.10.2",
     "types-toml>=0.10.8.2",
     "uvicorn==0.21.1",
@@ -28,6 +28,22 @@ dev = [
     "pre-commit>=4.0.1",
     "ruff>=0.8.3",
 ]
+
+[tool.taskipy.tasks]
+# Tasks that run custom scripts for project-specific purposes
+list = "uv run scripts/misc/list.py"
+generate-req = "uv run scripts/misc/generate_req.py"
+alembic-up = "uv run scripts/alembic/alembic_up.py"
+tw-install = "uv run scripts/tailwind/tw_install.py"
+tw-watch = "uv run scripts/tailwind/tw_watch.py"
+db-create = "uv run scripts/postgres/db_create.py"
+db-start = "uv run scripts/postgres/db_start.py"
+db-remove = "uv run scripts/postgres/db_remove.py"
+
+# Tasks that execute commands for code quality checks and tooling
+ruff_format = "uv run ruff format"
+ruff_lint= "uv run ruff check . --fix"
+ruff = "task ruff_format && task ruff_lint"
 
 [tool.ruff]
 target-version = "py312"

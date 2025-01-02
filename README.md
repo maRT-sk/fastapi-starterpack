@@ -68,23 +68,24 @@ The server will run on port 8000 with hot-reload enabled for real-time updates.
 
 ### Database Setup
 
-This project supports PostgreSQL and SQLite as database backends, providing flexibility for different use cases. 
+This project supports PostgreSQL and SQLite as database backends, providing flexibility for different use cases.
 Dependencies can be simplified based on the chosen backend:
+
 - For PostgreSQL, feel free to remove SQLite-related packages with `uv remove aiosqlite`.
-- For SQLite, feel free to  remove PostgreSQL-related packages with `uv remove psycopg2`.
+- For SQLite, feel free to remove PostgreSQL-related packages with `uv remove psycopg2`.
 
 #### For PostgreSQL:
 
 1. Create and start a Docker container for PostgreSQL:
 
     ```bash
-    uvx invoke db-create
+    task db-create
     ```
 
 2. Create and apply migrations:
 
     ```bash
-    uvx invoke alembic-up
+    task alembic-up
     ```
 
 3. Enter a migration message when prompted (e.g., "initial").  
@@ -92,14 +93,15 @@ Dependencies can be simplified based on the chosen backend:
 
 #### For SQLite:
 
-- Similar to PostgreSQL, but **Skip `uvx invoke db-create`**, as SQLite automatically creates the database file.   
+- Similar to PostgreSQL, but **skip `task db-create`**, as SQLite automatically creates the database file.   
   Simply create and apply migrations:
 
     ```bash
-    uvx invoke alembic-up
+    task alembic-up
     ```
 
-  Enter a migration message (e.g., "initial"), check generated file in `alembic/versions`, and confirm to apply the upgrade.
+  Enter a migration message (e.g., "initial"), check generated file in `alembic/versions`, and confirm to apply the
+  upgrade.
 
 ## Project Structure
 
@@ -123,9 +125,9 @@ Dependencies can be simplified based on the chosen backend:
 │   ├── services/             # Business logic encapsulation
 │   ├── static/               # Static assets (CSS, JavaScript, images)
 │   └── templates/            # HTML templates (Jinja2)
+├── scripts/                  # Standalone automation scripts
 ├── alembic/                  # Database migration scripts
 ├── pyproject.toml            # Python project configuration
-├── tasks.py                  # Task automation and project management
 ├── .pre-commit-config.yaml   # Pre-commit hooks configuration
 └── .env                      # Local development configuration
 ```
@@ -137,7 +139,7 @@ Dependencies can be simplified based on the chosen backend:
 To view the full list of available tasks, run the following command:
 
 ```bash
-uvx invoke --list
+task list
 ```
 
 Below is a list of the currently available tasks for project management and automation:
@@ -163,28 +165,19 @@ Below is a list of the currently available tasks for project management and auto
 - **`tw-watch`**
   Watches the input CSS file and project files for changes and updates the output CSS file.
 
-- **`check-docker`**
-  Checks if Docker CLI is installed and Docker Desktop is running.
-
-- **`check-node-tools`**
-  Verifies that Node.js tools (`npm` and `npx`) are installed and available in the system PATH.
-
 #### Usage Example
 
 To run a task, use the following command:
 
 ```
-uvx invoke <task-name>
+task <task-name>
 ```
 
 For example, to create a PostgreSQL container:
 
 ```
-uvx invoke db-create
+task db-create
 ```
-
-> [!TIP]
-> Refer to `tasks.py` for detailed implementation.
 
 ### Linting and Formatting
 

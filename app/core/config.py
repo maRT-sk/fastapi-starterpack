@@ -29,7 +29,6 @@ class AppConfig:
         self.LOG_FILE = config("LOG_FILE", default="logs/app_{time}.log")
         self.LOG_LEVEL = config("LOG_LEVEL", default="INFO")
         self.DATABASE_URL = config("DATABASE_URL")
-        self.STARLETTE_ADMIN_KEY = config("STARLETTE_ADMIN_KEY", cast=ProtectedSecret)
 
 
 # Create a global instance of the configuration class that can be imported into other modules.

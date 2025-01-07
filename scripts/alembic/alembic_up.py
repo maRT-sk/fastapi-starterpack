@@ -5,10 +5,13 @@
 # ]
 # ///
 
+import os
 import subprocess
 import sys
 
 from loguru import logger
+
+os.environ["VIRTUAL_ENV"] = ""  # Clearing VIRTUAL_ENV, required for consistent behavior with Alembic and UV
 
 
 def alembic_up() -> None:
@@ -49,9 +52,11 @@ def alembic_up() -> None:
             logger.debug(result.stdout)
         except subprocess.CalledProcessError as e:
             logger.error(f"Database upgrade failed. Error: {e.stderr.strip()}")
+            logger.warning("Remember to check and delete the generated migration file.")
             sys.exit(1)
     else:
-        logger.info("Upgrade aborted.")
+        logger.info("Upgrade aborted!")
+        logger.warning("Remember to run 'alembic upgrade head' or manage/delete the generated migration file.")
 
 
 if __name__ == "__main__":

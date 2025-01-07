@@ -2,7 +2,9 @@ from collections.abc import Sequence
 
 from fastapi import APIRouter
 from fastapi import Depends
+from fastapi import Request
 from sqlmodel import select
+from starlette.authentication import requires
 
 from app.core.database import AsyncSession
 from app.core.database import get_session
@@ -13,9 +15,9 @@ from app.models.user import UserRead
 router = APIRouter()
 
 
-# TODO: Implement proper security mechanisms for this endpoint.
 @router.post("/users", response_model=UserRead)
-async def create_user(user_data: UserCreate, session: AsyncSession = Depends(get_session)) -> User:
+@requires("admin", redirect="home")  # TODO redirect to a better page
+async def create_user(request: Request, user_data: UserCreate, session: AsyncSession = Depends(get_session)) -> User:
     """
     Create a new user in the database.
     """
@@ -26,9 +28,12 @@ async def create_user(user_data: UserCreate, session: AsyncSession = Depends(get
     return user
 
 
-# TODO: Implement proper security mechanisms for this endpoint.
 @router.get("/users", response_model=list[UserRead])
-async def list_users(session: AsyncSession = Depends(get_session)) -> Sequence[UserRead]:
+@requires("admin", redirect="home")  # TODO redirect to a better page
+async def list_users(
+    request: Request,
+    session: AsyncSession = Depends(get_session),
+) -> Sequence[UserRead]:
     """Retrieve a list of all users from the database."""
     result = await session.exec(select(User))
     all_users = result.all()

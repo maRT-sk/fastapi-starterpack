@@ -5,7 +5,7 @@ from app.core.database import engine
 from app.core.lifespan import app_lifespan
 from app.core.logger import setup_logging
 from app.core.utils.toml_utils import get_version_from_pyproject
-from app.services.admin.provider import MyAuthProvider
+from app.services.admin.provider import StarletteAdminAuthProvider
 from app.services.admin.views import attach_admin_views
 
 
@@ -115,7 +115,7 @@ class AppManager:
             base_url="/admin",
             statics_dir="app/static",
             login_logo_url="/admin/statics/logo.svg",
-            auth_provider=MyAuthProvider(allow_paths=["static/logo.svg"]),
+            auth_provider=StarletteAdminAuthProvider(),
             middlewares=[
                 Middleware(SessionMiddleware, secret_key=app_config.SECRET_KEY),
             ],

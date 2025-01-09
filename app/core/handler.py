@@ -3,13 +3,14 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 from starlette.responses import Response
 
-from app.core.utils.logger_utils import log_caught_exception
+from app.core.logger import main_logger
+from app.core.utils.logger_utils import prepare_log_message
 from app.core.utils.response_utils import render_error_response
 
 
 async def handle_internal_server_error(request: Request, exc: Exception) -> Response:
     """Handle unexpected internal server errors (HTTP 500)."""
-    log_caught_exception("CRITICAL", "Internal server error occurred", exc, request)
+    main_logger.critical(prepare_log_message("Internal server error occurred", exc, request))
     return render_error_response(
         request,
         status_code=500,
@@ -22,7 +23,7 @@ async def handle_validation_exceptions(request: Request, exc: Exception) -> Resp
     if not isinstance(exc, RequestValidationError):  # This should never happen but ensures type safety at runtime
         raise TypeError(f"Unexpected exception type: {type(exc)}. Expected RequestValidationError.") from exc
 
-    log_caught_exception("INFO", "Client error - validation exception", exc, request)
+    main_logger.info(prepare_log_message("Client error - validation exception", exc, request))
     return render_error_response(
         request,
         status_code=400,
@@ -37,21 +38,21 @@ async def handle_http_exceptions(request: Request, exc: Exception) -> Response:
         raise TypeError(f"Unexpected exception type: {type(exc)}. Expected HTTPException.") from exc
 
     if 400 <= exc.status_code < 500:  # Client error  # noqa: PLR2004
-        log_caught_exception("WARNING", "A client error occurred", exc, request)
+        main_logger.warning(prepare_log_message("A client error occurred", exc, request))
         return render_error_response(
             request,
             status_code=exc.status_code,
             detail=exc.detail or "A client error occurred.",
         )
     elif 500 <= exc.status_code < 600:  # Server error  # noqa: PLR2004
-        log_caught_exception("ERROR", "Server error occurred", exc, request)
+        main_logger.error(prepare_log_message("Server error occurred", exc, request))
         return render_error_response(
             request,
             status_code=exc.status_code,
             detail=exc.detail or "A server error occurred.",
         )
     else:  # Unhandled status codes
-        log_caught_exception("CRITICAL", "Unhandled status code", exc, request)
+        main_logger.critical(prepare_log_message("Unhandled status code", exc, request))
         return render_error_response(
             request,
             status_code=exc.status_code,

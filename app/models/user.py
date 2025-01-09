@@ -7,7 +7,7 @@ from sqlmodel import Field
 from sqlmodel import Relationship
 from sqlmodel import SQLModel
 
-from app.core.auth.crypt import hash_password
+from app.core.auth.security import hash_password
 from app.models._links import UserPermissionLink
 from app.models.post import Post
 
@@ -30,6 +30,7 @@ class User(SQLModel, table=True):
     # Relationships
     user_permissions: list["Permission"] = Relationship(back_populates="users", link_model=UserPermissionLink)
     posts: list["Post"] = Relationship(back_populates="user")
+
 
 class UserCreate(SQLModel):
     username: str

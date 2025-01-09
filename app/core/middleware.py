@@ -13,6 +13,8 @@ from app.core.utils.response_utils import render_error_response
 class CSRFMiddleware(BaseHTTPMiddleware):
     """Middleware to handle Cross-Site Request Forgery (CSRF) protection by checking for a CSRF flag in cookies."""
 
+    # NOTE: Same-site cookies help prevent CSRF attacks, but additional protection is recommended.
+
     CSRF_COOKIE_NAME = "csrf_flag"  # Name of the cookie
     CSRF_COOKIE_VALUE = "1"  # Value of the cookie
     CSRF_MAX_AGE = 24 * 60 * 60  # Cookie expires in 24 hours
@@ -28,7 +30,7 @@ class CSRFMiddleware(BaseHTTPMiddleware):
         """
         # Reject non-GET requests if the CSRF flag is not present in the cookies
         if request.method != "GET" and not request.cookies.get("csrf_flag"):
-            main_logger.warning("CSRF flag is missing or invalid.")
+            main_logger.warning(f"CSRF token missing or invalid for {request.method} request to {request.url.path}")
             return render_error_response(request, status_code=403, detail="CSRF flag is missing or invalid.")
 
         # Store the CSRF flag in the `request.state` object for further use downstream

@@ -18,10 +18,12 @@ class TemplateManager:
         """Register global functions and variables to be used in Jinja2 templates."""
         self.templates.env.globals["static"] = self.static
         self.templates.env.globals["get_version"] = self.get_version
+        # Additional globals can be registered here.
 
     def _register_filters(self) -> None:
         """Register custom Jinja2 filters."""
         self.templates.env.filters["days_ago"] = self.days_ago
+        # Additional filters can be registered here.
 
     @staticmethod
     def static(path: str) -> str:

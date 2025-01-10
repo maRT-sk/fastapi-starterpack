@@ -5,7 +5,7 @@ from app.core.database import engine
 from app.core.lifespan import app_lifespan
 from app.core.logger import setup_logging
 from app.core.utils.toml_utils import get_version_from_pyproject
-from app.services.admin.provider import MyAuthProvider
+from app.services.admin.provider import StarletteAdminAuthProvider
 from app.services.admin.views import attach_admin_views
 
 
@@ -45,14 +45,21 @@ class AppManager:
         """Configures middleware for the FastAPI application."""
         from fastapi.middleware.cors import CORSMiddleware
         from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+        from starlette.middleware.authentication import AuthenticationMiddleware
         from starlette.middleware.gzip import GZipMiddleware
         from starlette.middleware.sessions import SessionMiddleware
         from starlette.middleware.trustedhost import TrustedHostMiddleware
 
+        from app.core.auth.backend import BasicAuthBackend
         from app.core.middleware import CSRFMiddleware
 
         # Add common middleware
         self.app.add_middleware(GZipMiddleware, minimum_size=1000)
+        self.app.add_middleware(
+            AuthenticationMiddleware,
+            backend=BasicAuthBackend(),
+            # TODO , on_error=on_auth_error
+        )
         self.app.add_middleware(SessionMiddleware, secret_key=app_config.SECRET_KEY)
 
         # Add production-specific middleware
@@ -98,6 +105,8 @@ class AppManager:
         """Sets up the admin interface."""
 
         # from starlette.middleware.sessions import SessionMiddleware
+        from starlette.middleware import Middleware
+        from starlette.middleware.sessions import SessionMiddleware
         from starlette_admin.contrib.sqlmodel import Admin
 
         admin_interface: Admin = Admin(
@@ -106,10 +115,10 @@ class AppManager:
             base_url="/admin",
             statics_dir="app/static",
             login_logo_url="/admin/statics/logo.svg",
-            auth_provider=MyAuthProvider(allow_paths=["static/logo.svg"]),
-            # middlewares=[
-            #     Middleware(SessionMiddleware, secret_key=app_config.SECRET_KEY),
-            # ],
+            auth_provider=StarletteAdminAuthProvider(),
+            middlewares=[
+                Middleware(SessionMiddleware, secret_key=app_config.SECRET_KEY),
+            ],
             templates_dir="app/templates/admin",
             debug=app_config.DEBUG,
         )

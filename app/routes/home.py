@@ -8,7 +8,7 @@ router = APIRouter()
 
 
 @router.get("/", response_class=HTMLResponse)
-async def read_home(request: Request) -> HTMLResponse:
+async def home(request: Request) -> HTMLResponse:
     """
     Home page endpoint that renders an HTML template.
     """

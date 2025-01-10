@@ -1,11 +1,9 @@
 from starlette_admin.contrib.sqla.ext.pydantic import ModelView
 from starlette_admin.contrib.sqlmodel import Admin
 
-from app.models.demo.product import Product
-from app.models.demo.product import ProductCreate
 from app.models.permission import Permission
+from app.models.post import Post
 from app.models.user import User
-from app.models.user import UserCreate
 
 # from starlette_admin.contrib.sqlmodel import ModelView
 
@@ -23,9 +21,9 @@ class UserView(ModelView):
 
 
 def attach_admin_views(admin_interface: Admin) -> None:
-    admin_interface.add_view(UserView(User, pydantic_model=UserCreate))
+    admin_interface.add_view(UserView(User, pydantic_model=User))
     admin_interface.add_view(ModelView(Permission, pydantic_model=Permission))
-    admin_interface.add_view(ModelView(Product, pydantic_model=ProductCreate))
+    admin_interface.add_view(ModelView(Post, pydantic_model=Post))
 
     # TODO
     # Validation via pydantic_model does not work; it might be a Starlette Admin bug.

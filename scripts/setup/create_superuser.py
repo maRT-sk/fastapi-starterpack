@@ -31,7 +31,7 @@ if __name__ == "__main__":
         superuser_password = getpass("Superuser Password: ")
 
         # Data payload for the superuser creation API.
-        superuser_data = {
+        new_superuser_data = {
             "username": superuser_username,
             "full_name": superuser_username,
             "password": superuser_password,
@@ -40,10 +40,13 @@ if __name__ == "__main__":
 
         try:
             # Prepare headers with authorization and content type and send the request.
-            auth_header = f"Basic SECRET_KEY:{secret_key}"
-            headers = {"Content-Type": CONTENT_TYPE, "Authorization": auth_header}
-            logger.info(f"Sending POST request to {SUPERUSER_URL} with data: {superuser_data}")
-            response = requests.post(SUPERUSER_URL, json=superuser_data, headers=headers)
+            headers = {
+                "Content-Type": CONTENT_TYPE,
+                "Authorization-Username": "SECRET_KEY",
+                "Authorization-Password": f"{secret_key}",
+            }
+            logger.info(f"Sending POST request to {SUPERUSER_URL} with data: {new_superuser_data}")
+            response = requests.post(SUPERUSER_URL, json=new_superuser_data, headers=headers)
             response.raise_for_status()
             logger.success(f"Superuser created successfully! Response: {response.json()}")
         except RequestException as e:

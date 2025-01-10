@@ -33,15 +33,12 @@ class StarletteAdminAuthProvider(AuthProvider):
         Authenticate the user using BasicAuthBackend and store session data .
         """
         try:
-            # Construct the Authorization header # todo encode it
-            authorization_value = f"Basic {username}:{password}"
-
-            # Create a new scope with modified headers
+            # Create a new scope with added custom headers
             modified_scope = dict(request.scope)  # Copy the existing scope
             headers = MutableHeaders(request.headers)
-            headers["Authorization"] = authorization_value  # Add the Authorization header
+            headers["Authorization-Username"] = username  # Add custom username header
+            headers["Authorization-Password"] = password  # Add custom password header
             modified_scope["headers"] = headers.raw
-
             # Create a new Request object with the modified scope
             modified_request = Request(scope=modified_scope, receive=request.receive)
 

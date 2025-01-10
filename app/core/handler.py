@@ -10,11 +10,13 @@ from app.core.utils.response_utils import render_error_response
 
 async def handle_internal_server_error(request: Request, exc: Exception) -> Response:
     """Handle unexpected internal server errors (HTTP 500)."""
-    main_logger.critical(prepare_log_message("Internal server error occurred", exc, request))
+    main_logger.critical(prepare_log_message("Internal server error", exc, request))
+    error_name = type(exc).__name__
+    error_message = str(exc)
     return render_error_response(
         request,
         status_code=500,
-        detail="An internal server error occurred. Please try again later.",
+        detail=f"An internal server error occurred. {error_name}: {error_message}",
     )
 
 
@@ -38,14 +40,14 @@ async def handle_http_exceptions(request: Request, exc: Exception) -> Response:
         raise TypeError(f"Unexpected exception type: {type(exc)}. Expected HTTPException.") from exc
 
     if 400 <= exc.status_code < 500:  # Client error  # noqa: PLR2004
-        main_logger.warning(prepare_log_message("A client error occurred", exc, request))
+        main_logger.warning(prepare_log_message("Client error", exc, request))
         return render_error_response(
             request,
             status_code=exc.status_code,
             detail=exc.detail or "A client error occurred.",
         )
     elif 500 <= exc.status_code < 600:  # Server error  # noqa: PLR2004
-        main_logger.error(prepare_log_message("Server error occurred", exc, request))
+        main_logger.error(prepare_log_message("Server error", exc, request))
         return render_error_response(
             request,
             status_code=exc.status_code,

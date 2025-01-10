@@ -10,7 +10,7 @@
 import os
 
 import requests
-from _helpers import POST_URL
+from _helpers import BLOG_URL
 from dotenv import load_dotenv
 from loguru import logger
 from requests.exceptions import RequestException
@@ -27,15 +27,19 @@ if __name__ == "__main__":
             raise OSError("SECRET_KEY not found in environment variables.")
 
         # Construct the authorization header using the secret key.
-        headers = {"Content-Type": CONTENT_TYPE, "Authorization": f"Basic SECRET_KEY:{secret_key}"}
+        headers = {
+            "Content-Type": CONTENT_TYPE,
+            "Authorization-Username": "SECRET_KEY",
+            "Authorization-Password": f"{secret_key}",
+        }
 
         # Define the payload data for the POST request.
         post_data = {"title": "Hello World", "content": "This is the content of my first post."}
 
         try:
             # Make the POST request to create a new post.
-            logger.info(f"Sending POST request to {POST_URL} with data: {post_data}")
-            response = requests.post(POST_URL, json=post_data, headers=headers)
+            logger.info(f"Sending POST request to {BLOG_URL} with data: {post_data}")
+            response = requests.post(BLOG_URL, json=post_data, headers=headers)
             response.raise_for_status()
             logger.success(f"Post created successfully! Response: {response.json()}")
         except RequestException as e:

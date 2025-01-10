@@ -28,13 +28,13 @@ alembic downgrade <revision_identifier>
 - Ensure your database models are up to date before generating migrations to accurately reflect schema changes.
 - The migrations are automatically stored in this directory and can be reviewed or edited as needed.
 
-## Alembic using the provided Justfile
+## Alembic using the taskipy tasks
 
-For a more streamlined process, you can perform migrations and database upgrades using the provided **Justfile**.
+For a more streamlined process, you can perform migrations and database upgrades using the provided scripts.
 To apply all migrations and upgrade the database, run:
 
 ```bash
-just alembic-up
+task alembic-up
 ```
 
 > [!WARNING]

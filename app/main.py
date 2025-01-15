@@ -107,7 +107,7 @@ class AppManager:
         # from starlette.middleware.sessions import SessionMiddleware
         from starlette.middleware import Middleware
         from starlette.middleware.sessions import SessionMiddleware
-        from starlette_admin.contrib.sqlmodel import Admin
+        from starlette_admin.contrib.sqla import Admin
 
         admin_interface: Admin = Admin(
             engine,

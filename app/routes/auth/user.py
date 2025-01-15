@@ -3,7 +3,7 @@ from collections.abc import Sequence
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import Request
-from sqlmodel import select
+from sqlalchemy.future import select
 from starlette.authentication import requires
 
 from app.core.database import AsyncSession
@@ -35,7 +35,7 @@ async def create_user(
     session.add(user)
     await session.commit()
     await session.refresh(user)
-    return user
+    return UserRead.model_validate(user)
 
 
 @router.get("/users", response_model=list[UserRead])
@@ -54,9 +54,10 @@ async def list_users(
     Returns:
         Sequence[UserRead]: A list of user details in the `UserRead` format.
     """
-    result = await session.exec(select(User))
-    all_users = result.all()
+    # Query all users
+    result = await session.execute(select(User))
+    all_users = result.scalars().all()  # Extract the results using `scalars`
 
-    # Convert User instances to UserRead instances using `model_dump`
-    user_reads = [UserRead(**user.model_dump()) for user in all_users]
+    # This ensures the data conforms to the API response schema
+    user_reads = [UserRead.model_validate(user) for user in all_users]
     return user_reads

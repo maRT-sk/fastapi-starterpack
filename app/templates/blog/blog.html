@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}Blog{% endblock %}
+
 {% block main %}
 
     {#
@@ -51,7 +53,10 @@
                                          alt="Bonnie Green avatar"/>
                                     <span class="font-medium dark:text-white">{{ post.user.username }} </span>
                                 </div>
-                                <a href="{{ url_for('blog', post_id=1) }}"
+                                <a hx-target="main"
+                                   hx-get="{{ url_for('blog', post_id=post.id) }}"
+                                   href="{{ url_for('blog', post_id=post.id) }}"
+                                   hx-push-url="true"
                                    class="inline-flex items-center font-medium text-sky-600 hover:underline">
                                     Read more
                                     <svg class="ml-2 w-4 h-4"

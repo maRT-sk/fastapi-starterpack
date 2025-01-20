@@ -24,7 +24,7 @@ async def blog_page(request: Request, session: AsyncSession = Depends(get_sessio
     return main_templates.TemplateResponse("blog/blog.html", context)
 
 
-@router.get("/{post_id}", response_class=HTMLResponse,  name="blog")
+@router.get("/{post_id}", response_class=HTMLResponse, name="blog")
 async def blog_page_single(
     post_id: int, request: Request, session: AsyncSession = Depends(get_session)
 ) -> HTMLResponse:

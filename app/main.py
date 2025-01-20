@@ -52,6 +52,7 @@ class AppManager:
 
         from app.core.auth.backend import BasicAuthBackend
         from app.core.middleware import CSRFMiddleware
+        from app.core.middleware import HtmxStateMiddleware
 
         # Add common middleware
         self.app.add_middleware(GZipMiddleware, minimum_size=1000)
@@ -61,6 +62,7 @@ class AppManager:
             # TODO , on_error=on_auth_error
         )
         self.app.add_middleware(SessionMiddleware, secret_key=app_config.SECRET_KEY)
+        self.app.add_middleware(HtmxStateMiddleware)
 
         # Add production-specific middleware
         if self.is_production:

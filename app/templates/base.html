@@ -12,9 +12,6 @@
             <meta hx-preserve="true"
                   name="viewport"
                   content="width=device-width, initial-scale=1.0">
-            <meta hx-preserve="true"
-                  name="htmx-config"
-                  content='{"defaultSwapStyle":"outerHTML", "refreshOnHistoryMiss":true}'>
 
             {# Dynamic title block with the application name. #}
             <title>{{ app_name }} {% block title %}{% endblock %}</title>
@@ -50,17 +47,25 @@
                     src="https://unpkg.com/htmx.org@1.x.x"></script>
             <script hx-preserve="true"
                     src="https://unpkg.com/htmx-ext-head-support@2.0.1/head-support.js"></script>
+            <script hx-preserve="true"
+                    src="https://unpkg.com/htmx-ext-preload@2.1.0/preload.js"></script>
             {# Blocks for additional metadata, styles, and scripts specific to individual pages. #}
             {% block extra_metadata %}{% endblock %}
             {% block extra_css %}{% endblock %}
             {% block extra_js %}{% endblock %}
         </head>
-        <body x-cloak
+
+        <body hx-ext="head-support,preload"
+              hx-boost="true"
+              x-cloak
               x-data="themeManager"
-              class="overflow-x-hidden overflow-y-scroll flex flex-col min-h-screen bg-slate-50 dark:bg-slate-800 "
+              class="overflow-x-hidden overflow-y-scroll flex flex-col min-h-screen bg-green-500 w-screen"
               :class="{ 'dark': darkMode }">
         {% include 'core/nav.html' %}
-        {% block main %}{% endblock %}
+        <div id="main-block"
+             class="flex flex-grow bg-slate-50 dark:bg-slate-800 w-screen">
+            {% block main %}{% endblock %}
+        </div>
         {% include 'core/footer.html' %}
         </body>
         </html>

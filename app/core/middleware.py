@@ -56,6 +56,7 @@ class MinifyResponseMiddleware(BaseHTTPMiddleware):
 
     ...
 
+
 class HtmxStateMiddleware(BaseHTTPMiddleware):
     """
     Middleware to check if a request is an HTMX request and set `request.state.is_htmx_request` accordingly.

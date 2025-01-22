@@ -2,10 +2,10 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from sqlmodel import SQLModel
 
 from alembic import context
 from app.core.config import app_config
+from app.models import Base
 from app.models import import_models_modules
 
 # this is the Alembic Config object, which provides
@@ -23,7 +23,7 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 
 import_models_modules()  # Dynamically import all model modules to ensure they are registered with SQLModel.metadata
-target_metadata = SQLModel.metadata
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

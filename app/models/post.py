@@ -1,47 +1,52 @@
 import enum
 from datetime import UTC
 from datetime import datetime
-from typing import TYPE_CHECKING
-from typing import Optional
 
-from sqlmodel import JSON
-from sqlmodel import Column
-from sqlmodel import Enum
-from sqlmodel import Field
-from sqlmodel import Relationship
-from sqlmodel import SQLModel
+from pydantic import BaseModel
+from pydantic import Field
+from sqlalchemy import JSON
+from sqlalchemy import Column
+from sqlalchemy import DateTime
+from sqlalchemy import Enum
+from sqlalchemy import ForeignKey
+from sqlalchemy import Integer
+from sqlalchemy import String
+from sqlalchemy.orm import relationship
 
-if TYPE_CHECKING:
-    from app.models.user import User
+from app.models import Base
 
 
-class PostStatus(str, enum.Enum):
+class PostStatus(enum.Enum):
     DRAFT = "DRAFT"
-    PUBLISHED = "DRAFT"
+    PUBLISHED = "PUBLISHED"
 
 
-class Post(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
-    title: str = Field(..., max_length=100)
-    content: str = Field(...)
-    user_id: int | None = Field(foreign_key="user.id", nullable=True)
-    post_date: datetime = Field(default_factory=lambda: datetime.now(UTC).replace(tzinfo=None), nullable=False)
-    post_modified: datetime = Field(default_factory=lambda: datetime.now(UTC).replace(tzinfo=None), nullable=False)
-    post_status: PostStatus = Field(sa_column=Column(Enum(PostStatus)), default=PostStatus.DRAFT)
-    post_metadata: dict | None = Field(sa_column=Column(JSON), default=None)
+class Post(Base):
+    __tablename__ = "post"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(100), nullable=False)
+    content = Column(String, nullable=False)
+    user_id = Column(Integer, ForeignKey("user.id"), nullable=True)
+    post_date = Column(DateTime(timezone=True), default=lambda: datetime.now(UTC).replace(tzinfo=None), nullable=False)
+    post_modified = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(UTC).replace(tzinfo=None), nullable=False
+    )
+    post_status = Column(Enum(PostStatus), default=PostStatus.DRAFT, nullable=False)
+    post_metadata = Column(JSON, default=None)
 
     # Relationships
-    user: Optional["User"] = Relationship(back_populates="posts")
+    user = relationship("User", back_populates="posts", lazy="selectin")
 
 
-class PostCreate(SQLModel):
-    title: str
-    content: str
-    post_status: PostStatus | None = PostStatus.DRAFT
-    post_metadata: dict | None = None
+class PostCreate(BaseModel):
+    title: str = Field(..., max_length=100, description="Title of the post (max 100 characters)")
+    content: str = Field(..., description="Content of the post")
+    post_status: PostStatus = Field(PostStatus.DRAFT, description="Status of the post")
+    post_metadata: dict | None = Field(None, description="Optional metadata for the post")
 
 
-class PostRead(SQLModel):
+class PostRead(BaseModel):
     id: int
     title: str
     content: str

@@ -55,3 +55,16 @@ class MinifyResponseMiddleware(BaseHTTPMiddleware):
     """Middleware to minify HTML or JSON responses."""
 
     ...
+
+
+class HtmxStateMiddleware(BaseHTTPMiddleware):
+    """
+    Middleware to check if a request is an HTMX request and set `request.state.is_htmx_request` accordingly.
+    - If the request contains the header "hx-request" with value "true", it is marked as an HTMX request.
+    - Adds `is_htmx_request` (bool) to `request.state` for downstream usage.
+    """
+
+    async def dispatch(self, request: Request, call_next: callable) -> Response:
+        request.state.is_htmx_request = request.headers.get("hx-request") == "true"
+        response: Response = await call_next(request)
+        return response

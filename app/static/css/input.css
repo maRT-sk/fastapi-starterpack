@@ -3,4 +3,30 @@
 @tailwind utilities;
 
 
-[x-cloak] { display: none !important; }
+[x-cloak] {
+    display: none !important;
+}
+
+/* TODO: May require adjustments to work nicely with partial requests that do not update 'main'. */
+.htmx-request main {
+    animation: fadeIn 0.3s ease-out, pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation-delay: 300s, 600ms; /* Start fade-in after 300ms, pulse animation after 600ms */
+}
+/* Fade-in animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 1; /* Start completely transparent */
+    }
+    100% {
+        opacity: 0.8; /* End with opacity 0.8 */
+    }
+}
+/* Pulsing animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.8; /* Maintain 0.8 opacity at start and end */
+    }
+    50% {
+        opacity: 0.1; /* Reduce to 0.1 opacity at midpoint */
+    }
+}

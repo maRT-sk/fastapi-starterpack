@@ -1,3 +1,4 @@
+from datetime import UTC
 from datetime import datetime
 
 from fastapi.templating import Jinja2Templates
@@ -40,16 +41,23 @@ class TemplateManager:
     def days_ago(value: datetime) -> str:
         """Custom filter to display how many days ago a given datetime occurred."""
         if not isinstance(value, datetime):
-            return str(value)  # Return as-is if not a datetime object
+            # TODO: refine this
+            return "UNKNOWN days ago"
 
-        now = datetime.now()
-        delta = now - value
-        if delta.days == 0:
-            return "Today"
-        elif delta.days == 1:
-            return "Yesterday"
-        else:
-            return f"{delta.days} days ago"
+        try:
+            # Use timezone-aware `datetime.now` to match the input `value`
+            now = datetime.now(UTC) if value.tzinfo else datetime.now()
+            delta = now - value
+
+            if delta.days == 0:
+                return "Today"
+            elif delta.days == 1:
+                return "Yesterday"
+            else:
+                return f"{delta.days} days ago"
+        except Exception:
+            # TODO: better Exception
+            return "UNKNOWN days ago"
 
 
 # Instantiate the TemplateManager and expose it for application-wide use

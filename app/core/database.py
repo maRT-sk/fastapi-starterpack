@@ -1,10 +1,10 @@
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
-from sqlmodel import select
-from sqlmodel.ext.asyncio.session import AsyncSession  # Importing AsyncSession from sqlmodel
+from sqlalchemy.sql import text
 
 from app.core.config import app_config
 from app.core.logger import main_logger
@@ -60,7 +60,7 @@ async def check_db_ready() -> None:
     """Checks if the database is ready for operations. Verifies connectivity using a lightweight."""
     try:
         async with engine.begin() as conn:
-            result = await conn.execute(select(1))
+            result = await conn.execute(text("SELECT 1"))
             _ = result.scalar()
         main_logger.info("Database connection successfully established.")
     except Exception as e:

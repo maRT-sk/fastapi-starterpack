@@ -1,31 +1,37 @@
 {% extends "base.html" %}
 
-{% block body %}
+{% block title %}Home{% endblock %}
 
+{% block extra_metadata %}
+    <meta name="description"
+          content="FastAPI Starter Pack - Quickstart your FastAPI projects with this ready-to-use template.">
+    <meta property="og:url"
+          content="https://github.com/maRT-sk/fastapi-starterpack">
+{% endblock %}
+
+{% block main %}
     {#
     Inspired by: https://merakiui.com/components/marketing/heros
     #}
-
-
-    <main class="h-full flex items-center justify-center py-10 px-4 mx-auto">
-
-        <section class="mx-auto text-center">
-            <div class="max-w-lg mx-auto">
-                <h1 class="text-3xl font-semibold text-gray-800 dark:text-white lg:text-4xl">
-                    Building your next app using this blueprint!</h1>
+    <main class="w-full flex-grow flex items-center bg-slate-50 dark:bg-slate-800 justify-center mx-auto max-w-screen-2xl">
+        <section class="text-center">
+            <div class="max-w-lg">
+                <h1 class="text-4xl dark:text-slate-200">
+                    Welcome to FastAPI
+                    <strong>Starter</strong><strong class="bg-clip-text text-transparent bg-gradient-to-r from-sky-600 to-violet-600">Pack</strong>
+                </h1>
                 <p class="my-6 text-gray-500 dark:text-gray-300">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero similique obcaecati illum
                     mollitia.
                 </p>
-                <a href="/blog"
-                   class="my-6 px-5 py-2 text-sm font-medium leading-5 text-center text-white capitalize bg-blue-600 rounded-lg hover:bg-blue-500 lg:mx-0 lg:w-auto focus:outline-none">
-                    Example blog
+                <a href="https://github.com/maRT-sk/fastapi-starterpack"
+                   type="button"
+                   class="bg-gradient-to-br from-sky-600 to-violet-600 text-white focus-visible:outline-sky-600 dark:focus-visible:outline-sky-600 rounded-xl inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap px-4 py-2 text-sm font-medium tracking-wide transition hover:hue-rotate-15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:opacity-100 active:outline-offset-0 disabled:cursor-not-allowed disabled:opacity-75">
+                    Github Info
                 </a>
                 <p class="mt-3 text-sm text-gray-400">The button works!</p>
             </div>
         </section>
-
     </main>
-
 
 {% endblock %}

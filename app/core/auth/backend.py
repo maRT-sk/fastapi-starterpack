@@ -1,5 +1,5 @@
 from loguru import logger
-from sqlmodel import select
+from sqlalchemy.future import select
 from starlette.authentication import AuthCredentials
 from starlette.authentication import AuthenticationBackend
 
@@ -28,7 +28,9 @@ async def verify_user_pw_from_db(username: str, password: str) -> User:
 
     async for session in get_session():
         # Query the database for a user with the given username
-        user = await session.scalar(select(User).where(User.username == username))
+        query = select(User).where(User.username == username)
+        result = await session.execute(query)
+        user = result.scalar_one_or_none()
         # Verify the password using the password hashing context
         if not user or not pwd_context.verify(password, user.password):
             raise AuthError.InvalidCredentialsError("Invalid username or password")

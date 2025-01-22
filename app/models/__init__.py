@@ -1,6 +1,15 @@
 from importlib import import_module
 from pathlib import Path
 
+from sqlalchemy.ext.asyncio import AsyncAttrs
+from sqlalchemy.orm import DeclarativeBase
+
+
+class Base(DeclarativeBase, AsyncAttrs):
+    """Base class for all the ORM models."""
+
+    pass
+
 
 def import_models_modules() -> None:
     """

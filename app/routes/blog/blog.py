@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import select
+from sqlalchemy.future import select
 
 from app.core.database import get_session
 from app.core.templates import main_templates
@@ -24,7 +24,7 @@ async def blog_page(request: Request, session: AsyncSession = Depends(get_sessio
     return main_templates.TemplateResponse("blog/blog.html", context)
 
 
-@router.get("/{post_id}", response_class=HTMLResponse)
+@router.get("/{post_id}", response_class=HTMLResponse, name="blog")
 async def blog_page_single(
     post_id: int, request: Request, session: AsyncSession = Depends(get_session)
 ) -> HTMLResponse:

@@ -24,7 +24,7 @@ tailored to specific needs.
 - **Tailwind CSS**: Utility-first CSS framework for modern UI design.
 - **Alpine.js**: JavaScript framework for composing behavior directly in your markup.
 - **HTMX.js**:  JavaScript framework that simplifies AJAX and dynamic content updates.
-- **PostgreSQL or SQLite**: Databases integrated with SQLModel for ORM and query management.
+- **PostgreSQL or SQLite**: Databases integrated with SQLAlchemy  for ORM and query management.
 - **Alembic**: Database migration management.
 - **UV**: An extremely fast Python package and project manager.
 - **MyPy and Ruff**: Ensures static type checking, linting, and code formatting.
@@ -120,7 +120,7 @@ Dependencies can be simplified based on the chosen backend:
 │   │   ├── logger.py         # Loguru logger configuration
 │   │   ├── middleware.py     # Custom middleware
 │   │   └── templates.py      # Jinja2 template environment
-│   ├── models/               # Database models (SQLModel)
+│   ├── models/               # Database models with pydantic validation
 │   ├── routes/               # API endpoints and application routes
 │   ├── services/             # Business logic encapsulation
 │   ├── static/               # Static assets (CSS, JavaScript, images)

@@ -52,10 +52,14 @@
                                          alt="Bonnie Green avatar"/>
                                     <span class="font-medium dark:text-white">{{ post.user.username }} </span>
                                 </div>
-                                <a hx-target="main"
-                                   hx-get="{{ url_for('blog', post_id=post.id) }}"
+                                <a
                                    href="{{ url_for('blog', post_id=post.id) }}"
+                                   preload="mousedown"
+                                   hx-boost="true"
+                                   hx-target="main"
                                    hx-push-url="true"
+                                   hx-indicator="#main-block"
+                                   hx-swap="outerHTML show:window:top"
                                    class="inline-flex items-center font-medium text-sky-600 hover:underline">
                                     Read more
                                     <svg class="ml-2 w-4 h-4"

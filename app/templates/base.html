@@ -1,83 +1,88 @@
-{% with version=get_version("ver_"), app_name="FastApi StarterPack |" %}
-    {% if not request.state.is_htmx_request %}
-        {# Meta tags for responsive design, character encoding, and browser compatibility. #}
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta hx-preserve="true"
-                  charset="UTF-8">
-            <meta hx-preserve="true"
-                  http-equiv="X-UA-Compatible"
-                  content="IE=edge">
-            <meta hx-preserve="true"
-                  name="viewport"
-                  content="width=device-width, initial-scale=1.0">
+{% set version = get_version("ver_") %}
+{% set app_name = "FastApi StarterPack |" %}
 
-            {# Dynamic title block with the application name. #}
-            <title>{{ app_name }} {% block title %}{% endblock %}</title>
 
-            {# Stylesheets and favicon with cache-busting version query parameters. #}
-            <link hx-preserve="true"
-                  rel="stylesheet"
-                  href="{{ url_for('static', path='/css/styles.css') }}?v={{ version }}">
-            <link hx-preserve="true"
-                  rel="icon"
-                  type="image/x-icon"
-                  href="{{ url_for('static', path='/images/favicon.ico') }}?v={{ version }}">
+{# Check if the request is not an HTMX request. #}
+{% if not request.state.is_htmx_request %}
+    {# Block for non-HTMX requests: Full HTML rendering. #}
+    <!DOCTYPE html>
+    <html lang="en"
+          hx-ext="head-support,preload">
+    <head>
+        <meta hx-preserve="true"
+              charset="UTF-8">
+        <meta hx-preserve="true"
+              http-equiv="X-UA-Compatible"
+              content="IE=edge">
+        <meta hx-preserve="true"
+              name="viewport"
+              content="width=device-width, initial-scale=1.0">
 
-            {# JavaScript assets including Alpine.js and HTMX with their extensions. #}
-            <script hx-preserve="true"
-                    defer
-                    src="{{ url_for('static', path='/js/main.js') }}?v={{ version }}"></script>
-            {# Alpine.js and alpine plugins #}
-            <script hx-preserve="true"
-                    defer
-                    src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-            <script hx-preserve="true"
-                    defer
-                    src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
-            <script hx-preserve="true"
-                    defer
-                    src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
-            <script hx-preserve="true"
-                    defer
-                    src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
-            {# Htmx and htmx extensions #}
-            <script hx-preserve="true"
-                    src="https://unpkg.com/htmx.org@1.x.x"></script>
-            <script hx-preserve="true"
-                    src="https://unpkg.com/htmx-ext-head-support@2.0.1/head-support.js"></script>
-            <script hx-preserve="true"
-                    src="https://unpkg.com/htmx-ext-preload@2.1.0/preload.js"></script>
-            {# Blocks for additional metadata, styles, and scripts specific to individual pages. #}
-            {% block extra_metadata %}{% endblock %}
-            {% block extra_css %}{% endblock %}
-            {% block extra_js %}{% endblock %}
-        </head>
+        {# Dynamic title block with the application name. #}
+        <title>{{ app_name }} {% block title %}{% endblock %}</title>
 
-        <body hx-ext="head-support,preload"
-              hx-boost="true"
-              x-cloak
-              x-data="themeManager"
-              class="overflow-x-hidden overflow-y-scroll flex flex-col min-h-screen bg-green-500 w-screen"
-              :class="{ 'dark': darkMode }">
-        {% include 'core/nav.html' %}
-        <div id="main-block"
-             class="flex flex-grow bg-slate-50 dark:bg-slate-800 w-screen">
-            {% block main %}{% endblock %}
-        </div>
-        {% include 'core/footer.html' %}
-        </body>
-        </html>
-    {% else %}
-        {# Block for HTMX requests: Provides structure for partial updates without full HTML rendering. #}
-        <head>
-            <title>{{ app_name }} {{ self.title() }}</title>
-            {{ self.extra_metadata() }}
-            {{ self.extra_css() }}
-            {{ self.extra_js() }}
-        </head>
-        {{ self.main() }}
-    {% endif %}
-{% endwith %}
+        {# Stylesheets and favicon with cache-busting version query parameters. #}
+        <link hx-preserve="true"
+              rel="stylesheet"
+              href="{{ url_for('static', path='/css/styles.css') }}?v={{ version }}">
+        <link hx-preserve="true"
+              rel="icon"
+              type="image/x-icon"
+              href="{{ url_for('static', path='/images/favicon.ico') }}?v={{ version }}">
+        {# TODO: browser history does not work #}
+        <meta name="htmx-config"
+              content='{"historyCacheSize": 0}'>
+
+        {# JavaScript assets including Alpine.js and HTMX with their extensions. #}
+        <script hx-preserve="true"
+                defer
+                src="{{ url_for('static', path='/js/main.js') }}?v={{ version }}"></script>
+        {# Alpine.js and alpine plugins #}
+        <script hx-preserve="true"
+                defer
+                src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script hx-preserve="true"
+                defer
+                src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
+        <script hx-preserve="true"
+                defer
+                src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+        <script hx-preserve="true"
+                defer
+                src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+        {# Htmx and htmx extensions #}
+        <script hx-preserve="true"
+                src="https://unpkg.com/htmx.org@1.x.x"></script>
+        <script hx-preserve="true"
+                src="https://unpkg.com/htmx-ext-head-support@2.0.1/head-support.js"></script>
+        <script hx-preserve="true"
+                src="https://unpkg.com/htmx-ext-preload@2.1.0/preload.js"></script>
+        {# Blocks for additional metadata, styles, and scripts specific to individual pages. #}
+        {% block extra_metadata %}{% endblock %}
+        {% block extra_css %}{% endblock %}
+        {% block extra_js %}{% endblock %}
+    </head>
+
+    <body x-cloak
+          x-data="themeManager"
+          class="overflow-x-hidden overflow-y-scroll flex flex-col min-h-screen bg-green-500 w-screen"
+          :class="{ 'dark': darkMode }">
+    {% include 'core/nav.html' %}
+    <div id="main-block"
+         class="flex flex-grow bg-slate-50 dark:bg-slate-800 w-screen">
+        {% block main %}{% endblock %}
+    </div>
+    {% include 'core/footer.html' %}
+    </body>
+    </html>
+{% else %}
+    {# Block for HTMX requests: Provides structure for partial updates without full HTML rendering. #}
+    <head>
+        <title>{{ app_name }} {{ self.title() }}</title>
+        {{ self.extra_metadata() }}
+        {{ self.extra_css() }}
+        {{ self.extra_js() }}
+    </head>
+    {{ self.main() }}
+{% endif %}
 

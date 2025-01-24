@@ -113,10 +113,10 @@ class AppManager:
 
         admin_interface: Admin = Admin(
             engine,
-            title="Example: Auth",
+            title="Admin Interface",
             base_url="/admin",
             statics_dir="app/static",
-            login_logo_url="/admin/statics/logo.svg",
+            login_logo_url="/static/images/logo.svg",
             auth_provider=StarletteAdminAuthProvider(),
             middlewares=[
                 Middleware(SessionMiddleware, secret_key=app_config.SECRET_KEY),
@@ -141,7 +141,7 @@ setup_logging()
 
 # Create FastAPI application instance
 app = FastAPI(
-    title="Product Management API",
+    title="FastAPI StarterPack",
     version=get_version_from_pyproject(),
     lifespan=app_lifespan,
 )

@@ -3,8 +3,7 @@
     Inspired by: https://www.penguinui.com/components/navbar
 #}
 
-<nav preload="mouseover"
-     x-data="{ mobileMenuIsOpen: false }"
+<nav x-data="{ mobileMenuIsOpen: false }"
      @click.away="mobileMenuIsOpen = false"
      class="w-full flex items-start justify-between bg-slate-50 border-b border-slate-300 px-4 sm:px-6 py-4 dark:border-slate-700 dark:bg-slate-800"
      aria-label="penguin ui menu">
@@ -20,20 +19,24 @@
                 class="hidden items-center gap-7 md:flex max-w-screen-2xl">
             <li>
                 <a href="/"
+                   preload="mouseover"
+                   hx-boost="true"
                    hx-push-url="true"
                    hx-target="main"
                    hx-indicator="#main-block"
-                   hx-swap="outerHTML"
+                   hx-swap="outerHTML show:window:top"
                    class="font-medium text-slate-700 underline-offset-2 hover:text-sky-600 focus:outline-none focus:underline dark:text-slate-300 dark:hover:text-sky-600"
                    aria-current="page">Home
                 </a>
             </li>
             <li>
                 <a href="{{ url_for('blog_page') }}"
+                   preload="mouseover"
+                   hx-boost="true"
                    hx-target="main"
                    hx-push-url="true"
                    hx-indicator="#main-block"
-                   hx-swap="outerHTML"
+                   hx-swap="outerHTML show:window:top"
                    class="font-medium text-slate-700 underline-offset-2 hover:text-sky-600 focus:outline-none focus:underline dark:text-slate-300 dark:hover:text-sky-600">
                     Blog
                 </a>
@@ -114,9 +117,8 @@
                           stroke-linejoin="round"
                           d="M6 18 18 6M6 6l12 12"></path>
                 </svg>
-            </button
+            </button>
         </div>
-
 
         <!-- Mobile Menu -->
         <ul x-cloak
@@ -131,21 +133,24 @@
             class="fixed max-h-svh overflow-y-auto inset-x-0 top-0 z-10 flex flex-col divide-y divide-slate-300 rounded-b-xl border-b border-slate-300 bg-slate-100 px-6 pb-6 pt-20 dark:divide-slate-700 dark:border-slate-700 dark:bg-slate-800 md:hidden">
             <li class="py-4">
                 <a href="/"
-                   hx-get="/"
+                   preload="mouseover"
+                   hx-boost="true"
                    hx-target="main"
                    hx-push-url="true"
                    hx-indicator="#main-block"
-                   hx-swap="outerHTML"
+                   hx-swap="outerHTML show:window:top"
                    class="w-full text-lg font-medium text-slate-700 focus:underline dark:text-slate-300"
                 >Home
                 </a>
             </li>
             <li class="py-4">
                 <a href="{{ url_for('blog_page') }}"
+                   preload="mouseover"
+                   hx-boost="true"
                    hx-target="main"
                    hx-push-url="true"
                    hx-indicator="#main-block"
-                   hx-swap="outerHTML"
+                   hx-swap="outerHTML show:window:top"
                    class="w-full text-lg font-medium text-slate-700 focus:underline dark:text-slate-300">
                     Blog
                 </a>

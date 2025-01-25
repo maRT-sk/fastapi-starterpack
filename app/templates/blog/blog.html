@@ -12,7 +12,7 @@
 
         <section class="w-full mx-auto">
 
-            <div class="px-4 mx-auto  lg:py-16 lg:px-6">
+            <div class="px-4 py-10 mx-auto lg:py-16 lg:px-6">
                 <div class="mx-auto max-w-screen-sm text-center lg:mb-16 mb-8">
                     <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
                         Our Blog
@@ -52,10 +52,14 @@
                                          alt="Bonnie Green avatar"/>
                                     <span class="font-medium dark:text-white">{{ post.user.username }} </span>
                                 </div>
-                                <a hx-target="main"
-                                   hx-get="{{ url_for('blog', post_id=post.id) }}"
+                                <a
                                    href="{{ url_for('blog', post_id=post.id) }}"
+                                   preload="mousedown"
+                                   hx-boost="true"
+                                   hx-target="main"
                                    hx-push-url="true"
+                                   hx-indicator="#main-block"
+                                   hx-swap="outerHTML show:window:top"
                                    class="inline-flex items-center font-medium text-sky-600 hover:underline">
                                     Read more
                                     <svg class="ml-2 w-4 h-4"

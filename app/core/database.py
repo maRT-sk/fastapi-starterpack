@@ -62,10 +62,10 @@ async def check_db_ready() -> None:
         async with engine.begin() as conn:
             result = await conn.execute(text("SELECT 1"))
             _ = result.scalar()
-        main_logger.info("Database connection successfully established.")
+        main_logger.debug("Database connection successfully established.")
     except Exception as e:
         main_logger.error(f"Failed to initialize the database: {type(e).__name__}: {str(e)}")
-        raise RuntimeError("Database initialization failed.") from e
+        raise
 
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:

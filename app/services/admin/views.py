@@ -1,4 +1,6 @@
+from starlette_admin import CustomView
 from starlette_admin.contrib.sqla.ext.pydantic import ModelView
+from starlette_admin.views import Link
 
 from app.models.permission import Permission
 from app.models.permission import PermissionCreate
@@ -8,6 +10,7 @@ from app.models.user import User
 from app.models.user import UserCreate
 
 
+# TODO: Find a better way to implement this
 class UserView(ModelView):
     fields = [
         User.username,  # type: ignore
@@ -21,9 +24,18 @@ class UserView(ModelView):
 
 
 def attach_admin_views(admin_interface) -> None:
-    admin_interface.add_view(UserView(User, pydantic_model=UserCreate))
-    admin_interface.add_view(ModelView(Permission, pydantic_model=PermissionCreate))
-    admin_interface.add_view(ModelView(Post, pydantic_model=PostCreate))
+    """Adds views to the admin interface."""
+
+    # Add custom views to admin panel
+    admin_interface.add_view(CustomView(label="Dashboard", icon="fa fa-home", path="/", template_path="dashboard.html"))
+
+    # Add model views to admin panel
+    admin_interface.add_view(UserView(User, pydantic_model=UserCreate, icon="fa fa-users"))
+    admin_interface.add_view(ModelView(Permission, pydantic_model=PermissionCreate, icon="fa fa-lock"))
+    admin_interface.add_view(ModelView(Post, pydantic_model=PostCreate, icon="fa fa-pen-to-square"))
+
+    # Add links to admin panel
+    admin_interface.add_view(Link(label="Go to frontend", icon="fa fa-link", url="/"))
 
     # TODO
     # Validation via pydantic_model does not work; it might be a Starlette Admin bug.

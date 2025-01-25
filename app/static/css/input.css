@@ -3,30 +3,20 @@
 @tailwind utilities;
 
 
-[x-cloak] {
-    display: none !important;
-}
+@layer utilities {
+    /* Alpine.js utility to hide elements with x-cloak until Alpine initializes */
+    /* Reference: https://alpinejs.dev/directives/cloak */
+    [x-cloak] {
+        @apply hidden;
+    }
 
-/* TODO: May require adjustments to work nicely with partial requests that do not update 'main'. */
-.htmx-request main {
-    animation: fadeIn 0.3s ease-out, pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    animation-delay: 300s, 600ms; /* Start fade-in after 300ms, pulse animation after 600ms */
-}
-/* Fade-in animation */
-@keyframes fadeIn {
-    0% {
-        opacity: 1; /* Start completely transparent */
+    /* HTMX-specific utility for activity indicators to handle loading states */
+    /* Reference: https://htmx.org/attributes/hx-indicator/ */
+    .htmx-indicator {
+        @apply opacity-0 transition-opacity duration-500 ease-in;
     }
-    100% {
-        opacity: 0.8; /* End with opacity 0.8 */
-    }
-}
-/* Pulsing animation */
-@keyframes pulse {
-    0%, 100% {
-        opacity: 0.8; /* Maintain 0.8 opacity at start and end */
-    }
-    50% {
-        opacity: 0.1; /* Reduce to 0.1 opacity at midpoint */
+
+    .htmx-request.htmx-indicator {
+        @apply opacity-100;
     }
 }

@@ -1,6 +1,8 @@
+{# It is recommended to avoid using third-party CDNs for production. #}
+{# Instead, host static files in your own CDN for better performance, security, and reliability. #}
+
 {% set version = get_version("ver_") %}
 {% set app_name = "FastApi StarterPack |" %}
-
 
 {# Check if the request is not an HTMX request. #}
 {% if not request.state.is_htmx_request %}
@@ -49,7 +51,7 @@
                 src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
         {# Htmx and htmx extensions #}
         <script hx-preserve="true"
-                src="https://unpkg.com/htmx.org@1.x.x"></script>
+                src="https://unpkg.com/htmx.org@2.x.x"></script>
         <script hx-preserve="true"
                 src="https://unpkg.com/htmx-ext-head-support@2.0.1/head-support.js"></script>
         <script hx-preserve="true"
@@ -64,6 +66,7 @@
           x-data="themeManager"
           class="overflow-x-hidden overflow-y-scroll flex flex-col min-h-screen bg-green-500 w-screen"
           :class="{ 'dark': darkMode }">
+    {% include 'core/loading.html' %}
     {% include 'core/nav.html' %}
     <div id="main-block"
          class="flex flex-grow bg-slate-50 dark:bg-slate-800 w-screen">

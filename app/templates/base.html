@@ -19,6 +19,9 @@
         <meta hx-preserve="true"
               name="viewport"
               content="width=device-width, initial-scale=1.0">
+        <meta hx-preserve="true"
+              name="htmx-config"
+              content='{"responseHandling": [{"code":".*", "swap": true}]}'/>
 
         {# Dynamic title block with the application name. #}
         <title>{{ app_name }} {% block title %}{% endblock %}</title>
@@ -64,7 +67,7 @@
 
     <body x-cloak
           x-data="themeManager"
-          class="overflow-x-hidden overflow-y-scroll flex flex-col min-h-screen bg-green-500 w-screen"
+          class="overflow-x-hidden overflow-y-scroll flex flex-col min-h-screen bg-violet-600 w-screen"
           :class="{ 'dark': darkMode }">
     {% include 'core/loading.html' %}
     {% include 'core/nav.html' %}

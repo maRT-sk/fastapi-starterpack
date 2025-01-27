@@ -11,12 +11,18 @@ from app.core.utils.response_utils import render_error_response
 async def handle_internal_server_error(request: Request, exc: Exception) -> Response:
     """Handle unexpected internal server errors (HTTP 500)."""
     main_logger.critical(prepare_log_message("Internal server error", exc, request))
-    error_name = type(exc).__name__
-    error_message = str(exc)
+
+    from sqlalchemy.exc import OperationalError
+
+    if isinstance(exc, OperationalError):
+        error_context = "A database error occurred while processing your request."
+    else:
+        error_context = f"An unexpected server error occurred. (Error type: {type(exc).__name__})"
+
     return render_error_response(
         request,
         status_code=500,
-        detail=f"An internal server error occurred. {error_name}: {error_message}",
+        detail=f"Internal server error: {error_context}",
     )
 
 

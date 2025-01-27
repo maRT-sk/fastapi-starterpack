@@ -1,8 +1,4 @@
-class SecretValidationError(Exception):
-    """Custom exception for errors related to ProtectedSecret validation."""
-
-    def __init__(self, message: str):
-        super().__init__(message)
+from app.core.utils.exceptions import AppError
 
 
 class ProtectedSecret:
@@ -17,16 +13,16 @@ class ProtectedSecret:
         """Validates the complexity of the secret. Raises an error if invalid."""
 
         if len(value) < 12:  # noqa: PLR2004
-            raise SecretValidationError("Secret must be at least 12 characters long.")
+            raise AppError.SecretValidationError("Secret must be at least 12 characters long.")
 
         if not any(char.isupper() for char in value):
-            raise SecretValidationError("Secret must contain at least one uppercase letter.")
+            raise AppError.SecretValidationError("Secret must contain at least one uppercase letter.")
 
         if not any(char.islower() for char in value):
-            raise SecretValidationError("Secret must contain at least one lowercase letter.")
+            raise AppError.SecretValidationError("Secret must contain at least one lowercase letter.")
 
         if not any(char.isdigit() for char in value):
-            raise SecretValidationError("Secret must contain at least one digit.")
+            raise AppError.SecretValidationError("Secret must contain at least one digit.")
 
     def __repr__(self) -> str:
         class_name = self.__class__.__name__

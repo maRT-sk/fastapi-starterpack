@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer utilities {
     /* Alpine.js utility to hide elements with x-cloak until Alpine initializes */
     /* Reference: https://alpinejs.dev/directives/cloak */
@@ -18,5 +17,16 @@
 
     .htmx-request.htmx-indicator {
         @apply opacity-100;
+        animation: pulse 2s infinite;
+        animation-delay: 1s;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity:0.75;
+        }
     }
 }

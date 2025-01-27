@@ -24,7 +24,7 @@ tailored to specific needs.
 - **Tailwind CSS**: Utility-first CSS framework for modern UI design.
 - **Alpine.js**: JavaScript framework for composing behavior directly in your markup.
 - **HTMX.js**:  JavaScript framework that simplifies AJAX and dynamic content updates.
-- **PostgreSQL or SQLite**: Databases integrated with SQLAlchemy  for ORM and query management.
+- **SQLite or PostgreSQL**: Databases integrated with SQLAlchemy for ORM and query management.
 - **Alembic**: Database migration management.
 - **UV**: An extremely fast Python package and project manager.
 - **MyPy and Ruff**: Ensures static type checking, linting, and code formatting.
@@ -66,42 +66,43 @@ uv sync
 
 The server will run on port 8000 with hot-reload enabled for real-time updates.
 
+> [!TIP]
+> For a better development experience, you can start the application using an IDE to help with debugging code and
+> templates.
+
 ### Database Setup
 
-This project supports PostgreSQL and SQLite as database backends, providing flexibility for different use cases.
-Dependencies can be simplified based on the chosen backend:
+This project supports both **SQLite** and **PostgreSQL** as database backends.
 
-- For PostgreSQL, feel free to remove SQLite-related packages with `uv remove aiosqlite`.
-- For SQLite, feel free to remove PostgreSQL-related packages with `uv remove psycopg2`.
+#### Using SQLite (default):
 
-#### For PostgreSQL:
+1. Create and apply migrations:
+    ```bash
+    task alembic-up
+    ```
+2. When prompted, enter a migration message (e.g., "initial").
+3. Review the generated migration file in the alembic/versions directory.
+4. Confirm the upgrade by typing "Y" when prompted.
 
-1. Create and start a Docker container for PostgreSQL:
+#### Using PostgreSQL:
 
+1. Install PostgreSQL dependencies:
+    ```bash
+    uv sync --extra postgres
+    ```
+
+2. Create and start a PostgreSQL Docker container:
     ```bash
     task db-create
     ```
 
-2. Create and apply migrations:
-
+3. Create and apply migrations:
     ```bash
     task alembic-up
     ```
-
-3. Enter a migration message when prompted (e.g., "initial").  
-   Review the generated migration file in `alembic/versions`, and confirm with "Y" to apply the upgrade.
-
-#### For SQLite:
-
-- Similar to PostgreSQL, but **skip `task db-create`**, as SQLite automatically creates the database file.   
-  Simply create and apply migrations:
-
-    ```bash
-    task alembic-up
-    ```
-
-  Enter a migration message (e.g., "initial"), check generated file in `alembic/versions`, and confirm to apply the
-  upgrade.
+4. When prompted, enter a migration message (e.g., "initial").
+5. Review the generated migration file in the alembic/versions directory.
+6. Confirm the upgrade by typing "Y" when prompted.
 
 ## Project Structure
 
@@ -181,22 +182,10 @@ task db-create
 
 ### Linting and Formatting
 
-Run linting checks:
+Run the Ruff linter and formatter:
 
 ```
-uv run ruff check .
-```
-
-Fix linting issues automatically:
-
-```
-uv run ruff check . --fix
-```
-
-Format the code:
-
-```
-uv run ruff format
+task ruff
 ```
 
 ### Type Checking

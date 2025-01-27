@@ -50,7 +50,7 @@ def render_error_response(
     if response_type == ErrorResponseType.JSON:
         return JSONResponse(
             status_code=status_code,
-            content={"status_code": status_code, "detail": detail, "context": context},
+            content={"status_code": status_code, "detail": detail},
         )
     elif response_type == ErrorResponseType.HTML:
         context = context or {}

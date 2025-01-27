@@ -24,7 +24,7 @@ def db_create(container_name: str = POSTGRES_CONTAINER_NAME) -> None:
 
     if not user or not password or not db:
         raise ValueError(
-            "Missing one or more required environment variables: " "POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB"
+            "Missing one or more required environment variables: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB"
         )
 
     os.system(

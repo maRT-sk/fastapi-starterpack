@@ -4,6 +4,7 @@ from starlette.config import Config
 from starlette.datastructures import CommaSeparatedStrings
 
 from app.core.utils.config_utils import ProtectedSecret
+from app.core.utils.exceptions import AppError
 
 
 class AppConfig:
@@ -22,13 +23,19 @@ class AppConfig:
         config_path: str | None = ".env" if Path(".env").exists() else None
         config = Config(config_path)
 
-        self.SECRET_KEY = config("SECRET_KEY", cast=ProtectedSecret)
-        self.ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=CommaSeparatedStrings)
-        self.DEBUG = config("DEBUG", cast=bool, default=False)
-        self.DB_ECHO = config("DB_ECHO", cast=bool, default=False)
-        self.LOG_FILE = config("LOG_FILE", default="logs/app_{time}.log")
-        self.LOG_LEVEL = config("LOG_LEVEL", default="INFO")
-        self.DATABASE_URL = config("DATABASE_URL")
+        try:
+            self.SECRET_KEY = config("SECRET_KEY", cast=ProtectedSecret)
+            self.ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=CommaSeparatedStrings)
+            self.DEBUG = config("DEBUG", cast=bool, default=False)
+            self.DB_ECHO = config("DB_ECHO", cast=bool, default=False)
+            self.LOG_FILE = config("LOG_FILE", default="logs/app_{time}.log")
+            self.LOG_LEVEL = config("LOG_LEVEL", default="INFO")
+            self.DATABASE_URL = config("DATABASE_URL")
+        except KeyError as e:
+            missing_key = str(e).strip('"')
+            raise AppError.MissingConfigurationError(
+                f"'{missing_key}'\nPlease ensure you have set up the environment variables or created an .env file."
+            ) from e
 
 
 # Create a global instance of the configuration class that can be imported into other modules.

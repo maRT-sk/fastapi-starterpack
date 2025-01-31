@@ -8,29 +8,29 @@
     Inspired by: https://flowbite.com/blocks/marketing/blog/
     #}
 
-    <main class="max-w-screen-2xl mx-auto flex items-start px-4 bg-slate-50 dark:bg-slate-800 w-full ">
+    <main class="mx-auto flex w-full max-w-screen-2xl items-start bg-slate-50 px-4 dark:bg-slate-800">
 
-        <section class="w-full mx-auto">
+        <section class="mx-auto w-full">
 
-            <div class="px-4 py-10 mx-auto lg:py-16 lg:px-6">
-                <div class="mx-auto max-w-screen-sm text-center lg:mb-16 mb-8">
-                    <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+            <div class="mx-auto px-4 py-10 lg:px-6 lg:py-16">
+                <div class="mx-auto mb-8 max-w-screen-sm text-center lg:mb-16">
+                    <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white lg:text-4xl">
                         Our Blog
                     </h2>
-                    <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">
+                    <p class="font-light text-gray-500 dark:text-gray-400 sm:text-xl">
                         We use an agile approach to test assumptions and connect with the needs of your audience
                         early and often.
                     </p>
                 </div>
 
 
-                <div class="grid gap-8 lg:grid-cols-2 ">
+                <div class="grid gap-8 lg:grid-cols-2">
                     {% for post in posts %}
-                        <article class="p-6 bg-white rounded-lg border-1 border-gray-200 drop-shadow dark:bg-gray-800 dark:border-gray-700">
-                            <div class="flex justify-between items-center mb-5 text-gray-500">
-                                <span class="bg-primary-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
+                        <article class="rounded-lg border-gray-200 bg-white p-6 drop-shadow border-1 dark:border-gray-700 dark:bg-gray-800">
+                            <div class="mb-5 flex items-center justify-between text-gray-500">
+                                <span class="inline-flex items-center rounded text-xs font-medium bg-primary-100 text-primary-800 px-2.5 py-0.5 dark:bg-primary-200 dark:text-primary-800">
 
-                                    <svg class="mr-1 w-3 h-3"
+                                    <svg class="mr-1 h-3 w-3"
                                          fill="currentColor"
                                          viewBox="0 0 20 20"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -45,9 +45,9 @@
                                 <a href="#">{{ post.title }}</a>
                             </h2>
                             <p class="mb-5 font-light text-gray-500 dark:text-gray-400">{{ post.content }}</p>
-                            <div class="flex justify-between items-center">
+                            <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-4">
-                                    <img class="w-7 h-7 rounded-full"
+                                    <img class="h-7 w-7 rounded-full"
                                          src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png"
                                          alt="Bonnie Green avatar"/>
                                     <span class="font-medium dark:text-white">{{ post.user.username }} </span>
@@ -62,7 +62,7 @@
                                    hx-swap="outerHTML show:window:top"
                                    class="inline-flex items-center font-medium text-sky-600 hover:underline">
                                     Read more
-                                    <svg class="ml-2 w-4 h-4"
+                                    <svg class="ml-2 h-4 w-4"
                                          fill="currentColor"
                                          viewBox="0 0 20 20"
                                          xmlns="http://www.w3.org/2000/svg">

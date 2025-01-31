@@ -17,7 +17,7 @@ class StarletteAdminAuthProvider(AuthProvider):
     using BasicAuthBackend and manages session data.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.basic_auth_backend = BasicAuthBackend()  # Initialize the authentication backend
 
@@ -43,23 +43,26 @@ class StarletteAdminAuthProvider(AuthProvider):
             modified_request = Request(scope=modified_scope, receive=request.receive)
 
             # Use BasicAuthBackend's `authenticate` method
-            auth_credentials, auth_user = await self.basic_auth_backend.authenticate(modified_request)
+            auth_result = await self.basic_auth_backend.authenticate(modified_request)
 
-            if "admin" in auth_credentials.scopes:  # Set session data if the user has admin privileges
-                request.session.update(
-                    {
-                        "is_superuser": True,
-                        "username": auth_user.display_name,
-                    }
-                )
-                return response
-            else:
-                raise LoginFailed("Insufficient privileges to access this resource.")
+            if auth_result:  # TODO: simplify
+                auth_credentials, auth_user = auth_result
+                if "admin" in auth_credentials.scopes:  # Set session data if the user has admin privileges
+                    request.session.update(
+                        {
+                            "is_superuser": True,
+                            "username": auth_user.display_name,
+                        }
+                    )
+                    return response
+                else:
+                    raise LoginFailed("Insufficient privileges to access this resource.")
         except AuthenticationError:
             raise LoginFailed("Invalid username or password") from AuthenticationError
         except Exception as e:
             main_logger.critical("something went wrong", exc_info=e)
             raise LoginFailed("Invalid username or password") from AuthenticationError
+        raise LoginFailed("Insufficient privileges to access this resource.")
 
     async def is_authenticated(self, request: Request) -> bool:
         """Check if the user is authenticated based on session data."""

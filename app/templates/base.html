@@ -67,12 +67,12 @@
 
     <body x-cloak
           x-data="themeManager"
-          class="overflow-x-hidden overflow-y-scroll flex flex-col min-h-screen bg-violet-600 w-screen"
+          class="flex min-h-screen w-screen flex-col overflow-x-hidden overflow-y-scroll bg-violet-600"
           :class="{ 'dark': darkMode }">
     {% include 'core/loading.html' %}
     {% include 'core/nav.html' %}
     <div id="main-block"
-         class="flex flex-grow bg-slate-50 dark:bg-slate-800 w-screen">
+         class="flex w-screen flex-grow bg-slate-50 dark:bg-slate-800">
         {% block main %}{% endblock %}
     </div>
     {% include 'core/footer.html' %}

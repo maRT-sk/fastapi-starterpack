@@ -4,11 +4,11 @@ from starlette_admin.contrib.sqla.ext.pydantic import ModelView
 from starlette_admin.views import Link
 
 from app.models.permission import Permission
-from app.models.permission import PermissionCreate
 from app.models.post import Post
-from app.models.post import PostCreate
 from app.models.user import User
-from app.models.user import UserCreate
+from app.schemas.permission import PermissionSchema
+from app.schemas.post import PostSchema
+from app.schemas.user import UserSchema
 
 
 # TODO: Find a better way to implement this
@@ -31,9 +31,9 @@ def attach_admin_views(admin_interface: Admin) -> None:
     admin_interface.add_view(CustomView(label="Dashboard", icon="fa fa-home", path="/", template_path="dashboard.html"))
 
     # Add model views to admin panel
-    admin_interface.add_view(UserView(User, pydantic_model=UserCreate, icon="fa fa-users"))
-    admin_interface.add_view(ModelView(Permission, pydantic_model=PermissionCreate, icon="fa fa-lock"))
-    admin_interface.add_view(ModelView(Post, pydantic_model=PostCreate, icon="fa fa-pen-to-square"))
+    admin_interface.add_view(UserView(User, pydantic_model=UserSchema.Create, icon="fa fa-users"))
+    admin_interface.add_view(ModelView(Permission, pydantic_model=PermissionSchema.Create, icon="fa fa-lock"))
+    admin_interface.add_view(ModelView(Post, pydantic_model=PostSchema.Create, icon="fa fa-pen-to-square"))
 
     # Add links to admin panel
     admin_interface.add_view(Link(label="Go to frontend", icon="fa fa-link", url="/"))

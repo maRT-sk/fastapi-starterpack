@@ -53,7 +53,7 @@ db-remove = "uv run scripts/postgres/db_remove.py"
 
 # Code quality and tooling commands
 ruff_format = "uv run ruff format"
-ruff_lint= "uv run ruff check . --fix"
+ruff_lint = "uv run ruff check . --fix"
 ruff = "task ruff_format && task ruff_lint"
 
 [tool.ruff]
@@ -95,6 +95,7 @@ convention = "google"  # Enforce the Google Python Style Guide for docstrings
 
 [tool.mypy]
 files = ["app/"]
+exclude = ["scripts/"]
 python_version = "3.12"
 strict = true
 disallow_untyped_defs = true

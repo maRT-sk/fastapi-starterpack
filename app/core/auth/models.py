@@ -14,7 +14,7 @@ class AuthUser(BaseUser):
             identity: A custom identifier for the user, optional.
         """
         self._user = user
-        self._display_name = display_name or (user.username if user else "")
+        self._display_name = str(display_name or (user.username if user else "Unknown"))
         self._identity = identity or (str(user.id) if user else "")
 
     @property

@@ -1,4 +1,5 @@
 from starlette_admin import CustomView
+from starlette_admin.contrib.sqla import Admin
 from starlette_admin.contrib.sqla.ext.pydantic import ModelView
 from starlette_admin.views import Link
 
@@ -23,7 +24,7 @@ class UserView(ModelView):
     exclude_fields_from_list = [User.password]  # type: ignore
 
 
-def attach_admin_views(admin_interface) -> None:
+def attach_admin_views(admin_interface: Admin) -> None:
     """Adds views to the admin interface."""
 
     # Add custom views to admin panel

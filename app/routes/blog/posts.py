@@ -32,4 +32,4 @@ async def create_post(
     session.add(post)
     await session.commit()
     await session.refresh(post)
-    return post
+    return PostRead.model_validate(post)

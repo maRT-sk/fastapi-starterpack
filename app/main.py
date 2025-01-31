@@ -51,7 +51,7 @@ class AppManager:
         from starlette.middleware.trustedhost import TrustedHostMiddleware
 
         from app.core.auth.backend import BasicAuthBackend
-        from app.core.middleware import CSRFMiddleware
+        from app.core.middleware import BasicCSRFMiddleware
         from app.core.middleware import HtmxStateMiddleware
 
         # Add common middleware
@@ -66,7 +66,7 @@ class AppManager:
 
         # Add production-specific middleware
         if self.is_production:
-            self.app.add_middleware(CSRFMiddleware)
+            self.app.add_middleware(BasicCSRFMiddleware)
             self.app.add_middleware(TrustedHostMiddleware, allowed_hosts=app_config.ALLOWED_HOSTS)
             self.app.add_middleware(HTTPSRedirectMiddleware)
             self.app.add_middleware(

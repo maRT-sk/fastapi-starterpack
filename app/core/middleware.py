@@ -9,8 +9,12 @@ from starlette.responses import Response
 from app.core.logger import main_logger
 from app.core.utils.response_utils import render_error_response
 
+# === TYPE ALIASES ===
+NextCallable = Callable[[Request], Awaitable[Response]]
 
-class CSRFMiddleware(BaseHTTPMiddleware):
+
+# === MIDDLEWARES ===
+class BasicCSRFMiddleware(BaseHTTPMiddleware):
     """Middleware to handle Cross-Site Request Forgery (CSRF) protection by checking for a CSRF flag in cookies."""
 
     # NOTE: Same-site cookies help prevent CSRF attacks, but additional protection is recommended.
@@ -19,9 +23,7 @@ class CSRFMiddleware(BaseHTTPMiddleware):
     CSRF_COOKIE_VALUE = "1"  # Value of the cookie
     CSRF_MAX_AGE = 24 * 60 * 60  # Cookie expires in 24 hours
 
-    async def dispatch(
-        self, request: Request, call_next: Callable[[Request], Awaitable[Response]]
-    ) -> Response | JSONResponse:
+    async def dispatch(self, request: Request, call_next: NextCallable) -> Response | JSONResponse:
         """
         Middleware behavior:
         - For non-GET requests, it verifies the presence of the CSRF flag in cookies.
@@ -51,8 +53,8 @@ class CSRFMiddleware(BaseHTTPMiddleware):
         return response
 
 
-class MinifyResponseMiddleware(BaseHTTPMiddleware):
-    """Middleware to minify HTML or JSON responses."""
+class AdvancedCSRFMiddleware(BaseHTTPMiddleware):
+    """Middleware for handling advanced CSRF protection in HTTP requests."""
 
     ...
 
@@ -64,7 +66,7 @@ class HtmxStateMiddleware(BaseHTTPMiddleware):
     - Adds `is_htmx_request` (bool) to `request.state` for downstream usage.
     """
 
-    async def dispatch(self, request: Request, call_next: callable) -> Response:
+    async def dispatch(self, request: Request, call_next: NextCallable) -> Response:
         request.state.is_htmx_request = request.headers.get("hx-request") == "true"
-        response: Response = await call_next(request)
+        response = await call_next(request)
         return response

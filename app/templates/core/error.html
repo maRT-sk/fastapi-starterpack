@@ -6,10 +6,10 @@
     Error message page with a status code, error detail, and a "Take me home" button.
     Inspired by: https://merakiui.com/components/marketing/404-pages
     #}
-    <main class="flex-grow flex items-center bg-slate-50 dark:bg-slate-800">
+    <main class="flex flex-grow items-center bg-slate-50 dark:bg-slate-800">
 
 
-        <div class="flex items-center px-6 py-12 mx-auto">
+        <div class="mx-auto flex items-center px-6 py-12">
             <div>
                 <p class="text-sm font-medium text-blue-500 dark:text-blue-400">{{ status_code }} error</p>
                 <h2 class="mt-3 text-2xl font-semibold text-gray-800 dark:text-white md:text-3xl">
@@ -24,15 +24,15 @@
                 <p class="mt-4 text-gray-500 dark:text-gray-400">
                     {{ status_detail }}
                 </p>
-                <div class="flex items-center mt-6 gap-x-3">
+                <div class="mt-6 flex items-center gap-x-3">
                     <a href="/"
-                       class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700">
+                       class="flex w-1/2 items-center justify-center gap-x-2 rounded-lg border bg-white px-5 py-2 text-sm text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 sm:w-auto dark:hover:bg-gray-800">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              fill="none"
                              viewBox="0 0 24 24"
                              stroke-width="1.5"
                              stroke="currentColor"
-                             class="w-5 h-5 rtl:rotate-180">
+                             class="h-5 w-5 rtl:rotate-180">
                             <path stroke-linecap="round"
                                   stroke-linejoin="round"
                                   d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"></path>

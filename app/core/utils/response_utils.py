@@ -30,7 +30,7 @@ def render_error_response(
     status_code: int,
     detail: str,
     context: dict[str, Any] | None = None,
-    template: str | None = "core/error.html",
+    template: str = "core/error.html",
 ) -> Response:
     """
     Utility to create JSON or HTML responses based on the request's content type.

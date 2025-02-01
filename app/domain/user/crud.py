@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from datetime import UTC
 from datetime import datetime
 from typing import Any
@@ -6,20 +5,21 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.utils.repository import Repository
 from app.domain.user.exception import UsernameAlreadyExistsError
 from app.domain.user.model import User
 
 
-class UserRepository:
+class UserRepository(Repository[User]):
     """Repository class for handling User database operations."""
 
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def list(self, limit: int = 10, offset: int = 0) -> Sequence[User]:
-        """Lists users with pagination support."""
-        result = await self.session.execute(select(User).order_by(User.created_at.desc()).offset(offset).limit(limit))
-        return result.scalars().all()
+    async def list(self) -> list[User]:
+        """Returns a list of all Users from the database."""
+        result = await self.session.execute(select(User).order_by(User.created_at.desc()))
+        return list(result.scalars().all())
 
     async def get(self, user_id: int) -> User | None:
         """Fetches a user by ID."""

@@ -32,14 +32,12 @@ async def create_user(
 async def list_users(
     request: Request,
     session: AsyncSession = Depends(get_session),
-    limit: int = 10,
-    offset: int = 0,
 ) -> list[UserSchema.Read]:
     """
     Retrieve a paginated list of users.
     """
     repository = UserRepository(session)
-    users = await repository.list(limit=limit, offset=offset)  # Use repository list method
+    users = await repository.list()  # Use repository list method
     return [UserSchema.Read.model_validate(user) for user in users]
 
 

@@ -1,10 +1,11 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.utils.repository import Repository
 from app.domain.post.model import Post
 
 
-class PostRepository:
+class PostRepository(Repository[Post]):
     """Repository class for handling Post database operations."""
 
     def __init__(self, session: AsyncSession):

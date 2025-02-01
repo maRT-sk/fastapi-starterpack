@@ -3,7 +3,7 @@ from datetime import datetime
 
 from fastapi.templating import Jinja2Templates
 
-from app.core.utils.toml_utils import get_version_from_pyproject
+from app.core.utils.misc_utils import get_version_from_pyproject
 
 
 class TemplateManager:

@@ -8,8 +8,8 @@ from sqlalchemy import String
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
-from app.models import Base
-from app.models._links import user_permission_table
+from app.core.database import Base
+from app.domain.permission.model import user_permission_table
 
 
 class User(Base):

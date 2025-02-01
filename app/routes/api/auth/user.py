@@ -6,9 +6,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.authentication import requires
 
 from app.core.database import get_session
-from app.models.user import User
-from app.repositories.user import UserRepository
-from app.schemas.user import UserSchema
+from app.domain.user.crud import UserRepository
+from app.domain.user.model import User
+from app.domain.user.schema import UserSchema
 
 router = APIRouter()
 

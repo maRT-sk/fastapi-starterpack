@@ -3,12 +3,12 @@ from starlette_admin.contrib.sqla import Admin
 from starlette_admin.contrib.sqla.ext.pydantic import ModelView
 from starlette_admin.views import Link
 
-from app.models.permission import Permission
-from app.models.post import Post
-from app.models.user import User
-from app.schemas.permission import PermissionSchema
-from app.schemas.post import PostSchema
-from app.schemas.user import UserSchema
+from app.domain.permission.model import Permission
+from app.domain.permission.schema import PermissionSchema
+from app.domain.post.model import Post
+from app.domain.post.schema import PostSchema
+from app.domain.user.model import User
+from app.domain.user.schema import UserSchema
 
 
 # TODO: Find a better way to implement this

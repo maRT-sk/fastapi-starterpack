@@ -7,8 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_session
 from app.core.templates import main_templates
-from app.repositories.post import PostRepository
-from app.schemas.post import PostSchema
+from app.domain.post.crud import PostRepository
+from app.domain.post.schema import PostSchema
 
 router = APIRouter()
 

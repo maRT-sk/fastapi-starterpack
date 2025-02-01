@@ -1,6 +1,6 @@
 from starlette.authentication import BaseUser
 
-from app.models.user import User
+from app.domain.user.model import User
 
 
 class AuthUser(BaseUser):

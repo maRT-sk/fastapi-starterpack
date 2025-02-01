@@ -4,9 +4,10 @@ from app.core.config import app_config
 from app.core.database import engine
 from app.core.lifespan import app_lifespan
 from app.core.logger import setup_logging
-from app.core.utils.toml_utils import get_version_from_pyproject
-from app.services.admin.provider import StarletteAdminAuthProvider
-from app.services.admin.views import attach_admin_views
+from app.core.utils.misc_utils import get_version_from_pyproject
+from app.domain.user.services.admin.provider import StarletteAdminAuthProvider
+from app.domain.user.services.admin.views import attach_admin_views
+from app.domain.user.services.auth.backend import BasicAuthBackend
 
 
 class AppManager:
@@ -50,7 +51,6 @@ class AppManager:
         from starlette.middleware.sessions import SessionMiddleware
         from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-        from app.core.auth.backend import BasicAuthBackend
         from app.core.middleware import BasicCSRFMiddleware
         from app.core.middleware import HtmxStateMiddleware
 

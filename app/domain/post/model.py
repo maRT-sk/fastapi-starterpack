@@ -1,4 +1,3 @@
-import enum
 from datetime import UTC
 from datetime import datetime
 
@@ -11,12 +10,8 @@ from sqlalchemy import String
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
-from app.models import Base
-
-
-class PostStatus(enum.Enum):
-    DRAFT = "DRAFT"
-    PUBLISHED = "PUBLISHED"
+from app.core.database import Base
+from app.domain.post.enums import PostStatus
 
 
 class Post(Base):

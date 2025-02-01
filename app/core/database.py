@@ -1,8 +1,10 @@
 from collections.abc import AsyncGenerator
 
+from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
 
@@ -81,4 +83,7 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
             main_logger.debug("Async database session closed.")
 
 
-__all__ = ["AsyncSession", "get_session", "async_session_maker"]
+Base = declarative_base(cls=AsyncAttrs)
+
+
+__all__ = ["Base", "AsyncSession", "get_session", "async_session_maker", "engine", "check_db_ready"]

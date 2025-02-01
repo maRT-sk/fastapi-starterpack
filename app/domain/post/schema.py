@@ -4,7 +4,7 @@ from typing import Any
 from pydantic import BaseModel
 from pydantic import Field
 
-from app.models.post import PostStatus
+from app.domain.post.enums import PostStatus
 
 
 class PostSchema:

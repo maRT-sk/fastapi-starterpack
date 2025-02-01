@@ -4,12 +4,12 @@ from starlette.authentication import AuthCredentials
 from starlette.authentication import AuthenticationBackend
 from starlette.requests import HTTPConnection
 
-from app.core.auth.models import AuthUser
-from app.core.auth.security import pwd_context
 from app.core.config import app_config
 from app.core.database import get_session
 from app.core.utils.exceptions import AuthError
-from app.models.user import User
+from app.domain.user.model import User
+from app.domain.user.services.auth.models import AuthUser
+from app.domain.user.services.auth.security import pwd_context
 
 
 async def verify_user_pw_from_db(username: str, password: str) -> User | None:

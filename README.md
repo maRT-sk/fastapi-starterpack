@@ -120,10 +120,17 @@ This project supports both **SQLite** and **PostgreSQL** as database backends.
 │   │   ├── lifespan.py       # Application lifecycle management
 │   │   ├── logger.py         # Loguru logger configuration
 │   │   ├── middleware.py     # Custom middleware
-│   │   └── templates.py      # Jinja2 template environment
-│   ├── models/               # Database models with pydantic validation
+│   │   ├── templates.py      # Jinja2 template environment
+│   │   └── utils/...         # Reusable utility functions and helpers
+│   ├── domain/               # Encapsulates domain-specific logic
+│   │   └──  module_n/        # Represents a specific domain (e.g., Users, Products)
+│   │       ├── model.py      # Repository pattern implementation for db operations
+│   │       ├── schema.py     # Pydantic schemas for validation and serialization
+│   │       ├── crud.py       # CRUD for repository design pattern
+│   │       ├── enums.py      # Enumerations for structured choices
+│   │       ├── exeptions.py  # Handles domain-specific exceptions
+│   │       └── services/...  # Business logic and domain-related services
 │   ├── routes/               # API endpoints and application routes
-│   ├── services/             # Business logic encapsulation
 │   ├── static/               # Static assets (CSS, JavaScript, images)
 │   └── templates/            # HTML templates (Jinja2)
 ├── scripts/                  # Standalone automation scripts

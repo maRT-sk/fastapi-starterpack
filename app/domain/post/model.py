@@ -10,7 +10,7 @@ from sqlalchemy import String
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
-from app.core.database import Base
+from app.core import Base
 from app.domain.post.enums import PostStatus
 
 

@@ -8,7 +8,7 @@ from sqlalchemy import String
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
-from app.core.database import Base
+from app.core import Base
 from app.domain.permission.model import user_permission_table
 
 

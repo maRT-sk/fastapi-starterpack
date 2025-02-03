@@ -1,6 +1,6 @@
 from passlib.context import CryptContext
 
-from app.core.config import app_config
+from app.core.config.settings import app_config
 
 # === CONSTANTS ===
 SECRET_KEY = str(app_config.SECRET_KEY)

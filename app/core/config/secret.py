@@ -1,4 +1,4 @@
-from app.core.utils.exceptions import AppError
+from app.core.config.exceptions import AppError
 
 
 class ProtectedSecret:

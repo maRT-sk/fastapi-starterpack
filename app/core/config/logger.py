@@ -4,7 +4,7 @@ import sys
 
 from loguru import logger
 
-from app.core.config import app_config
+from app.core.config.settings import app_config
 
 
 def configure_loguru() -> None:

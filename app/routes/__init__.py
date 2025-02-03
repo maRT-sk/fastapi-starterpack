@@ -5,7 +5,7 @@ from pathlib import Path
 from fastapi import APIRouter
 from fastapi.routing import APIRoute
 
-from app.core.logger import main_logger
+from app.core import main_logger
 
 
 class RouterManager:

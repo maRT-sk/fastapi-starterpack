@@ -1,15 +1,7 @@
-from collections.abc import AsyncGenerator
-
-from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.ext.asyncio import AsyncEngine
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
-from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.sql import text
 
-from app.core.config import app_config
-from app.core.logger import main_logger
+from app.core.config.settings import app_config
 
 
 class DatabaseEngineFactory:
@@ -49,41 +41,3 @@ class DatabaseEngineFactory:
 
 # Create the engine dynamically based on the database URL
 engine = DatabaseEngineFactory.get_engine(app_config.DATABASE_URL)
-
-# Create an asynchronous session factory
-async_session_maker = sessionmaker(  # type: ignore
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False,
-)
-
-
-async def check_db_ready() -> None:
-    """Checks if the database is ready for operations. Verifies connectivity using a lightweight."""
-    try:
-        async with engine.begin() as conn:
-            result = await conn.execute(text("SELECT 1"))
-            _ = result.scalar()
-        main_logger.debug("Database connection successfully established.")
-    except Exception as e:
-        main_logger.error(f"Failed to initialize the database: {type(e).__name__}: {str(e)}")
-        raise
-
-
-async def get_session() -> AsyncGenerator[AsyncSession, None]:
-    """Provides an async database session and ensures proper lifecycle management."""
-    async with async_session_maker() as session:
-        main_logger.debug("Async database session created.")
-        try:
-            yield session
-        except Exception as e:
-            main_logger.error(f"Error during database session: {type(e).__name__}: {str(e)}")
-            raise  # Re-raise exceptions for proper error handling, TODO: do we really need to raise it?
-        finally:
-            main_logger.debug("Async database session closed.")
-
-
-Base = declarative_base(cls=AsyncAttrs)
-
-
-__all__ = ["Base", "AsyncSession", "get_session", "async_session_maker", "engine", "check_db_ready"]

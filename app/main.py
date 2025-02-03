@@ -1,13 +1,9 @@
 from fastapi import FastAPI
 
-from app.core.config import app_config
-from app.core.database import engine
-from app.core.lifespan import app_lifespan
-from app.core.logger import setup_logging
-from app.core.utils.misc_utils import get_version_from_pyproject
-from app.domain.user.services.admin.provider import StarletteAdminAuthProvider
-from app.domain.user.services.admin.views import attach_admin_views
-from app.domain.user.services.auth.backend import BasicAuthBackend
+from app.core.config.logger import setup_logging
+from app.core.config.settings import app_config
+from app.core.config.versioning import get_version_from_pyproject
+from app.core.lifecycle.lifespan import app_lifespan
 
 
 class AppManager:
@@ -51,8 +47,9 @@ class AppManager:
         from starlette.middleware.sessions import SessionMiddleware
         from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-        from app.core.middleware import BasicCSRFMiddleware
-        from app.core.middleware import HtmxStateMiddleware
+        from app.core.gateway.middleware import BasicCSRFMiddleware
+        from app.core.gateway.middleware import HtmxStateMiddleware
+        from app.domain.user.services.auth.backend import BasicAuthBackend
 
         # Add common middleware
         self.app.add_middleware(GZipMiddleware, minimum_size=1000)
@@ -82,9 +79,9 @@ class AppManager:
         from fastapi.exceptions import RequestValidationError
         from starlette.exceptions import HTTPException  # NOTE: Use HTTPException from starlette
 
-        from app.core.handler import handle_http_exceptions
-        from app.core.handler import handle_internal_server_error
-        from app.core.handler import handle_validation_exceptions
+        from app.core.gateway.handler import handle_http_exceptions
+        from app.core.gateway.handler import handle_internal_server_error
+        from app.core.gateway.handler import handle_validation_exceptions
 
         self.app.add_exception_handler(RequestValidationError, handle_validation_exceptions)
         self.app.add_exception_handler(HTTPException, handle_http_exceptions)
@@ -110,6 +107,10 @@ class AppManager:
         from starlette.middleware import Middleware
         from starlette.middleware.sessions import SessionMiddleware
         from starlette_admin.contrib.sqla import Admin
+
+        from app.core.database.engine import engine
+        from app.domain.user.services.admin.provider import StarletteAdminAuthProvider
+        from app.domain.user.services.admin.views import attach_admin_views
 
         admin_interface: Admin = Admin(
             engine,

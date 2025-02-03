@@ -7,7 +7,7 @@ from starlette_admin.auth import AdminUser
 from starlette_admin.auth import AuthProvider
 from starlette_admin.exceptions import LoginFailed
 
-from app.core.logger import main_logger
+from app.core import main_logger
 from app.domain.user.services.auth.backend import BasicAuthBackend
 
 

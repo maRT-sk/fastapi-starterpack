@@ -5,7 +5,7 @@ from sqlalchemy import String
 from sqlalchemy import Table
 from sqlalchemy.orm import relationship
 
-from app.core.database import Base
+from app.core import Base
 
 # Association table for User and Permission
 user_permission_table = Table(

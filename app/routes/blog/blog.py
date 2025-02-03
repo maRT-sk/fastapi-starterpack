@@ -5,8 +5,8 @@ from fastapi import Request
 from fastapi.responses import HTMLResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import get_session
-from app.core.templates import main_templates
+from app.core import get_session
+from app.core import main_templates
 from app.domain.post.crud import PostRepository
 from app.domain.post.schema import PostSchema
 

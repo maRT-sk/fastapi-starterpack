@@ -6,8 +6,8 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.responses import Response
 
-from app.core.logger import main_logger
-from app.core.utils.response_utils import render_error_response
+from app.core.config.logger import main_logger
+from app.core.gateway.error_response import create_error_response
 
 # === TYPE ALIASES ===
 NextCallable = Callable[[Request], Awaitable[Response]]
@@ -33,7 +33,7 @@ class BasicCSRFMiddleware(BaseHTTPMiddleware):
         # Reject non-GET requests if the CSRF flag is not present in the cookies
         if request.method != "GET" and not request.cookies.get("csrf_flag"):
             main_logger.warning(f"CSRF token missing or invalid for {request.method} request to {request.url.path}")
-            return render_error_response(request, status_code=403, detail="CSRF flag is missing or invalid.")
+            return create_error_response(request, status_code=403, detail="CSRF flag is missing or invalid.")
 
         # Store the CSRF flag in the `request.state` object for further use downstream
         request.state.csrf_flag = request.cookies.get("csrf_flag", None)

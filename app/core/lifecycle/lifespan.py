@@ -3,9 +3,9 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from app.core.database import check_db_ready
-from app.core.database import engine
-from app.core.logger import main_logger
+from app.core.config.logger import main_logger
+from app.core.database.engine import engine
+from app.core.database.health import check_db_ready
 
 
 @asynccontextmanager

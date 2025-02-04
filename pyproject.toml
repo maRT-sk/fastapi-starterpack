@@ -34,6 +34,8 @@ dev = [
     "pre-commit>=4.0.1",
     "ruff>=0.8.3",
     "requests~=2.32.0",
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.25.3",
 ]
 
 [tool.taskipy.tasks]
@@ -94,7 +96,7 @@ max-complexity = 14  # Set the maximum allowed McCabe complexity score to 14, co
 convention = "google"  # Enforce the Google Python Style Guide for docstrings
 
 [tool.mypy]
-files = ["app/"]
+files = ["app/","tests/"]
 exclude = ["scripts/"]
 python_version = "3.12"
 strict = true
@@ -104,3 +106,8 @@ pretty = true
 check_untyped_defs = true
 warn_unused_ignores = false
 disallow_subclassing_any = false
+
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"

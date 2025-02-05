@@ -112,16 +112,14 @@ This project supports both **SQLite** and **PostgreSQL** as database backends.
 ```
 .
 ├── app/
-│   ├── main.py               # Application initialization and configuration
+│   ├── main.py               # Application entry point and startup configuration
 │   ├── core/                 # Core backend functionality
-│   │   ├── config.py         # Configuration settings
-│   │   ├── database.py       # Database connection and ORM setup
-│   │   ├── handler.py        # Exception handlers
-│   │   ├── lifespan.py       # Application lifecycle management
-│   │   ├── logger.py         # Loguru logger configuration
-│   │   ├── middleware.py     # Custom middleware
-│   │   ├── templates.py      # Jinja2 template environment
-│   │   └── utils/...         # Reusable utility functions and helpers
+│   │   ├── config/           # Configuration management and settings
+│   │   ├── data/             # Data structures, types, and enumerations
+│   │   ├── database/         # Database layer
+│   │   ├── gateway/          # Middlewares, exception handlers, and API gateway logic
+│   │   ├── lifecycle/        # Application lifecycle management
+│   │   └── rendering/        # Template rendering setup
 │   ├── domain/               # Encapsulates domain-specific logic
 │   │   └──  module_n/        # Represents a specific domain (e.g., Users, Products)
 │   │       ├── model.py      # Repository pattern implementation for db operations
@@ -129,7 +127,7 @@ This project supports both **SQLite** and **PostgreSQL** as database backends.
 │   │       ├── crud.py       # CRUD for repository design pattern
 │   │       ├── enums.py      # Enumerations for structured choices
 │   │       ├── exeptions.py  # Handles domain-specific exceptions
-│   │       └── services/...  # Business logic and domain-related services
+│   │       └── services/     # Business logic and domain-related services
 │   ├── routes/               # API endpoints and application routes
 │   ├── static/               # Static assets (CSS, JavaScript, images)
 │   └── templates/            # HTML templates (Jinja2)

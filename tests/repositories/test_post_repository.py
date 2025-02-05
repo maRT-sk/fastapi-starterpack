@@ -6,7 +6,7 @@ from app.domain.post.model import Post
 
 
 @pytest.mark.asyncio
-async def test_add_post(test_db_session: AsyncSession):
+async def test_add_post(test_db_session: AsyncSession) -> None:
     """Test adding and retrieving a post."""
     repository = PostRepository(test_db_session)
 
@@ -24,7 +24,7 @@ async def test_add_post(test_db_session: AsyncSession):
     assert retrieved_post.content == "This is a test post."
 
 
-async def test_get_post(test_db_session: AsyncSession):
+async def test_get_post(test_db_session: AsyncSession) -> None:
     """Test retrieving a post by ID."""
     repository = PostRepository(test_db_session)
     new_post = Post(title="Find Me", content="Test Content")
@@ -36,7 +36,7 @@ async def test_get_post(test_db_session: AsyncSession):
     assert fetched.title == "Find Me"
 
 
-async def test_list_posts(test_db_session: AsyncSession):
+async def test_list_posts(test_db_session: AsyncSession) -> None:
     """Test retrieving multiple posts from the database."""
     repository = PostRepository(test_db_session)
 
@@ -53,7 +53,7 @@ async def test_list_posts(test_db_session: AsyncSession):
     assert posts[1].title == "Post 2"
 
 
-async def test_delete_post(test_db_session: AsyncSession):
+async def test_delete_post(test_db_session: AsyncSession) -> None:
     """Test deleting a post from the database."""
     repository = PostRepository(test_db_session)
 
@@ -61,6 +61,7 @@ async def test_delete_post(test_db_session: AsyncSession):
     await repository.add(post)
 
     retrieved_post = await repository.get(1)
+    assert retrieved_post is not None
     assert retrieved_post.title == "Delete Me"
 
     await repository.delete(post)

@@ -35,6 +35,13 @@ repos:
           - loguru
           - sqlmodel
           - types-toml
+          - types-passlib
+          - starlette_admin
+          - alembic
+          - bcrypt
+          - pytest
+          - pytest_asyncio
+        exclude: ^scripts/
         args:
           - --config-file=pyproject.toml
         name: (MyPy) Static type-checking

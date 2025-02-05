@@ -18,6 +18,7 @@ dependencies = [
     "starlette-admin>=0.14.1",
     "taskipy>=1.14.1",
     "toml>=0.10.2",
+    "types-passlib>=1.7.7.20241221",
     "types-toml>=0.10.8.2",
     "uvicorn==0.21.1",
 ]

@@ -1,27 +1,28 @@
-import sys
+import asyncio
+from asyncio import AbstractEventLoop
 from collections.abc import AsyncGenerator
+from collections.abc import Generator
+from typing import Any
 
+import pytest
 import pytest_asyncio
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core import Base
-from app.core import main_logger
 from app.core.database import import_models_modules
 from app.core.database.engine import engine
 from app.core.database.session import async_session_maker
 
 
-@pytest_asyncio.fixture(scope="session", autouse=True)
-async def setup_and_teardown():
-    """Initialize database once before all tests and clear it after the last test."""
-    # TODO: Add any global setup logic if needed (e.g., seed test data)
-    yield  # Run all tests
-    sys.stdout.write("\n")
-    main_logger.debug("All tests completed.")
+@pytest.fixture(scope="session")
+def event_loop() -> Generator[AbstractEventLoop, Any, None]:
+    """Ensure a consistent event loop across all tests to prevent mismatches."""
+    loop = asyncio.get_event_loop()
+    yield loop  # Provide event loop to pytest
+    loop.close()
 
 
 @pytest_asyncio.fixture(scope="function")
-async def test_db_session() -> AsyncGenerator[AsyncSession, None]:
+async def test_db_session() -> AsyncGenerator[Any, Any]:
     """Reset database schema before each test and provide a fresh async session."""
 
     # Ensure all models are imported before running tests
@@ -31,10 +32,14 @@ async def test_db_session() -> AsyncGenerator[AsyncSession, None]:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
-        sys.stdout.write("\n")
-        main_logger.debug("Database reset before test.")
 
-    # Provide a fresh session for the test
+    # Create a new async session for the test
     async with async_session_maker() as session:
-        yield session  # This session is used in the test
-        await session.rollback()
+        yield session  # Provide this session to the test function
+
+    # Drop all tables after the test
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+
+    # Dispose the engine to close database connections
+    await engine.dispose()

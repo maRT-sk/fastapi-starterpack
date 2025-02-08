@@ -1,0 +1,39 @@
+name: Code Quality Check
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Test code quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    strategy:
+      matrix:
+        python-version: ['3.12']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          version: "latest"
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run Pre-Commit Hooks with python ${{ matrix.python-version }}
+        run: uv run pre-commit run --all-files
+
+      - name: Load environment variables from .env.template
+        run: grep -E '^[A-Za-z0-9_]+=' .env.template >> $GITHUB_ENV
+
+      - name: Test with python ${{ matrix.python-version }}
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: uv run pytest

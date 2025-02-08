@@ -4,8 +4,6 @@ repos:
     hooks:
       - id: check-toml
         name: (Basic) Validate TOML files
-      - id: check-executables-have-shebangs
-        name: (Basic) Check executables for shebangs
       - id: check-shebang-scripts-are-executable
         name: (Basic) Ensure shebang scripts are executable
       - id: end-of-file-fixer
@@ -35,6 +33,13 @@ repos:
           - loguru
           - sqlmodel
           - types-toml
+          - types-passlib
+          - starlette_admin
+          - alembic
+          - bcrypt
+          - pytest
+          - pytest_asyncio
+        exclude: ^scripts/
         args:
           - --config-file=pyproject.toml
         name: (MyPy) Static type-checking

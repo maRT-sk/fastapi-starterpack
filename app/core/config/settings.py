@@ -3,8 +3,8 @@ from pathlib import Path
 from starlette.config import Config
 from starlette.datastructures import CommaSeparatedStrings
 
-from app.core.config.exceptions import AppError
 from app.core.config.secret import ProtectedSecret
+from app.core.typedefs.exceptions import AppError
 
 
 class AppConfig:

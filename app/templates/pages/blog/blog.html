@@ -1,6 +1,9 @@
-{% extends "base.html" %}
+{% set title = title | default("Blog") %}
+{% set seo_description = seo_description | default("Explore our latest blog posts about FastAPI, Python, and web development.") %}
+{% set seo_keywords = seo_keywords | default("fastapi, blog, python, web development") %}
+{% set seo_image = seo_image | default(url_for('static', path='/images/cover.png')) %}
 
-{% block title %}Blog{% endblock %}
+{% extends "core/base.html" %}
 
 {% block main %}
 
@@ -8,7 +11,7 @@
     Inspired by: https://flowbite.com/blocks/marketing/blog/
     #}
 
-    <main class="mx-auto flex w-full max-w-screen-2xl items-start bg-slate-50 px-4 dark:bg-slate-800">
+    <main class="mx-auto flex w-full items-start bg-slate-50 px-4 dark:bg-slate-800">
 
         <section class="mx-auto w-full">
 

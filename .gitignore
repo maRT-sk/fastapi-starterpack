@@ -18,3 +18,7 @@ wheels/
 logs/
 node_modules/
 *.db
+
+package-lock.json
+package.json
+/logs/tests_alt/

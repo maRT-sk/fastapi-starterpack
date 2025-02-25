@@ -2,30 +2,25 @@
 {# Instead, host static files in your own CDN for better performance, security, and reliability. #}
 
 {% set version = get_version("ver_") %}
-{% set app_name = "FastApi StarterPack |" %}
+{% set app_name = "FastApi StarterPack | " %}
 
 {# Check if the request is not an HTMX request. #}
 {% if not request.state.is_htmx_request %}
     {# Block for non-HTMX requests: Full HTML rendering. #}
     <!DOCTYPE html>
     <html lang="en"
-          hx-ext="head-support,preload">
+          x-data="themeManager"
+          :class="{ 'dark': darkMode }">
+
     <head>
-        <meta hx-preserve="true"
-              charset="UTF-8">
-        <meta hx-preserve="true"
-              http-equiv="X-UA-Compatible"
-              content="IE=edge">
-        <meta hx-preserve="true"
-              name="viewport"
-              content="width=device-width, initial-scale=1.0">
+        {# Dynamic title block with the application name. #}
+        <title>{{ app_name }}{{ title }}</title>
+        {% include 'core/meta.html' %}
+
+        {# Configures HTMX to handle responses with specific behaviors. #}
         <meta hx-preserve="true"
               name="htmx-config"
               content='{"responseHandling": [{"code":".*", "swap": true}]}'/>
-
-        {# Dynamic title block with the application name. #}
-        <title>{{ app_name }} {% block title %}{% endblock %}</title>
-
         {# Stylesheets and favicon with cache-busting version query parameters. #}
         <link hx-preserve="true"
               rel="stylesheet"
@@ -61,29 +56,29 @@
                 src="https://unpkg.com/htmx-ext-preload@2.1.0/preload.js"></script>
         {# Blocks for additional metadata, styles, and scripts specific to individual pages. #}
         {% block extra_metadata %}{% endblock %}
-        {% block extra_css %}{% endblock %}
         {% block extra_js %}{% endblock %}
     </head>
 
     <body x-cloak
-          x-data="themeManager"
-          class="flex min-h-screen w-screen flex-col overflow-x-hidden overflow-y-scroll bg-violet-600"
-          :class="{ 'dark': darkMode }">
+          class="flex min-h-screen flex-col overflow-x-hidden overflow-y-scroll bg-slate-50 dark:bg-slate-800">
+
     {% include 'core/loading.html' %}
     {% include 'core/nav.html' %}
-    <div id="main-block"
-         class="flex w-screen flex-grow bg-slate-50 dark:bg-slate-800">
+
+    <div id="workspace"
+         class="mx-auto w-full max-w-screen-2xl flex-grow bg-slate-50 dark:bg-slate-800">
         {% block main %}{% endblock %}
     </div>
     {% include 'core/footer.html' %}
     </body>
+
     </html>
 {% else %}
     {# Block for HTMX requests: Provides structure for partial updates without full HTML rendering. #}
     <head>
-        <title>{{ app_name }} {{ self.title() }}</title>
+        <title>{{ title | default(app_name ~ " Default Title") }}</title>
+        {% include 'core/meta.html' %}
         {{ self.extra_metadata() }}
-        {{ self.extra_css() }}
         {{ self.extra_js() }}
     </head>
     {{ self.main() }}

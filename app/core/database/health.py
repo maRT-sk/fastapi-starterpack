@@ -1,7 +1,7 @@
 from sqlalchemy.sql import text
 
-from app.core.config.logger import main_logger
 from app.core.database.engine import engine
+from app.core.logging import main_logger
 
 
 async def check_db_ready() -> None:

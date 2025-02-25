@@ -1,19 +1,15 @@
-{% extends "base.html" %}
+{% set title = title | default("Home") %}
+{% set seo_description = seo_description | default("FastAPI StarterPack is a modern and scalable boilerplate") %}
+{% set seo_keywords = seo_keywords | default("fastapi, python, starter, boilerplate, async") %}
+{% set seo_image = seo_image | default(url_for('static', path='/images/cover.jpg')) %}
 
-{% block title %}Home{% endblock %}
-
-{% block extra_metadata %}
-    <meta name="description"
-          content="FastAPI Starter Pack - Quickstart your FastAPI projects with this ready-to-use template.">
-    <meta property="og:url"
-          content="https://github.com/maRT-sk/fastapi-starterpack">
-{% endblock %}
+{% extends "core/base.html" %}
 
 {% block main %}
     {#
     Inspired by: https://merakiui.com/components/marketing/heros
     #}
-    <main class="mx-auto flex w-full max-w-screen-2xl flex-grow items-center justify-center bg-slate-50 dark:bg-slate-800">
+    <main class="mx-auto mt-32 flex w-full items-center justify-center bg-slate-50 dark:bg-slate-800">
         <section class="text-center">
             <div class="max-w-lg">
                 <h1 class="text-4xl dark:text-slate-200">
@@ -21,8 +17,7 @@
                     <strong>Starter</strong><strong class="bg-gradient-to-r from-sky-600 to-violet-600 bg-clip-text text-transparent">Pack</strong>
                 </h1>
                 <p class="my-6 text-gray-500 dark:text-gray-300">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero similique obcaecati illum
-                    mollitia.
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero similique obcaecati illum mollitia.
                 </p>
                 <a href="https://github.com/maRT-sk/fastapi-starterpack"
                    type="button"

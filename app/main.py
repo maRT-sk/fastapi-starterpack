@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 
-from app.core.config.logger import setup_logging
-from app.core.config.settings import app_config
-from app.core.config.versioning import get_version_from_pyproject
-from app.core.lifecycle.lifespan import app_lifespan
+from app.core.config import app_config
+from app.core.lifecycle import app_lifespan
+from app.core.utils import get_version_from_pyproject
 
 
 class AppManager:
@@ -32,11 +31,30 @@ class AppManager:
 
     def setup_application(self) -> None:
         """Apply all configurations to the FastAPI application."""
+        self.register_routes()
         self.setup_middlewares()
         self.register_exception_handlers()
-        self.mount_static_files()
-        self.load_routes()
         self.setup_admin_interface()
+
+    def register_routes(self) -> None:
+        """Mount static files and register all application routes."""
+
+        from fastapi import APIRouter
+        from fastapi.staticfiles import StaticFiles
+
+        from app.routes.api.auth.user import router as api_users_router
+        from app.routes.api.blog.blog import router as api_blog_router
+        from app.routes.pages.blog import router as blog_router
+        from app.routes.pages.home import router as home_router
+
+        routers: list[APIRouter] = [home_router, blog_router, api_blog_router, api_users_router]
+
+        # Register routers
+        for router in routers:
+            self.app.include_router(router)
+
+        # Mount static files
+        self.app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
     def setup_middlewares(self) -> None:
         """Configures middleware for the FastAPI application."""
@@ -49,7 +67,7 @@ class AppManager:
 
         from app.core.gateway.middleware import BasicCSRFMiddleware
         from app.core.gateway.middleware import HtmxStateMiddleware
-        from app.domain.user.services.auth.backend import BasicAuthBackend
+        from app.services.auth.backend import BasicAuthBackend
 
         # Add common middleware
         self.app.add_middleware(GZipMiddleware, minimum_size=1000)
@@ -94,12 +112,6 @@ class AppManager:
             self.app.redoc_url = None
             self.app.openapi_url = None
 
-    def mount_static_files(self) -> None:
-        """Mount the static files directory to serve static assets."""
-        from fastapi.staticfiles import StaticFiles
-
-        self.app.mount("/static", StaticFiles(directory="app/static"), name="static")
-
     def setup_admin_interface(self) -> None:
         """Sets up the admin interface."""
 
@@ -109,8 +121,8 @@ class AppManager:
         from starlette_admin.contrib.sqla import Admin
 
         from app.core.database.engine import engine
-        from app.domain.user.services.admin.provider import StarletteAdminAuthProvider
-        from app.domain.user.services.admin.views import attach_admin_views
+        from app.services.admin_portal.provider import StarletteAdminAuthProvider
+        from app.services.admin_portal.views import attach_admin_views
 
         admin_interface: Admin = Admin(
             engine,
@@ -129,16 +141,6 @@ class AppManager:
         attach_admin_views(admin_interface)
         admin_interface.mount_to(self.app)
 
-    def load_routes(self) -> None:
-        """Load and register all application routes."""
-        from app.routes import main_router
-
-        # All routes from the `routes` folder are gathered automatically within main_router
-        app.include_router(main_router)
-
-
-# Setup application logging
-setup_logging()
 
 # Create FastAPI application instance
 app = FastAPI(

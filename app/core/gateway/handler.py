@@ -3,9 +3,9 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 from starlette.responses import Response
 
-from app.core.config.logger import main_logger
 from app.core.gateway.error_response import create_error_response
 from app.core.gateway.error_response import prepare_log_message
+from app.core.logging import main_logger
 
 
 async def handle_internal_server_error(request: Request, exc: Exception) -> Response:

@@ -73,5 +73,6 @@ def setup_logging() -> None:
         logger_obj.propagate = False
 
 
-# Main logger that can be imported for use in other modules.
-main_logger = logger.bind(module=__name__)
+def get_logger(name: str):  # type: ignore
+    """Returns a Loguru logger instance bound to the specified module or component."""
+    return logger.bind(module=name)

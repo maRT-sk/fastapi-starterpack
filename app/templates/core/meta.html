@@ -1,0 +1,71 @@
+{% set title = title | default("Default Title") %}
+{% set seo_description = seo_description | default("Default site description") %}
+{% set seo_keywords = seo_keywords | default("Default meta keywords") %}
+{% set seo_image = seo_image | default(url_for('static', path='/images/cover.png')) %}
+
+<!-- General Meta Tags -->
+<meta charset="UTF-8">
+<meta http-equiv="Content-Language"
+      content="en">
+<meta http-equiv="X-UA-Compatible"
+      content="IE=edge,chrome=1">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=5">
+<meta name="description"
+      content="{{ seo_description }}">
+<meta name="keywords"
+      content="{{ seo_keywords }}">
+<meta name="author"
+      content="Your Name or Company">
+<meta name="robots"
+      content="index, follow">
+<link rel="canonical"
+      href="{{ request.url }}">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:title"
+      content="{{ title }}">
+<meta property="og:description"
+      content="{{ seo_description }}">
+<meta property="og:type"
+      content="website">
+{% if seo_image %}
+    <meta property="og:image"
+          content="{{ seo_image }}">
+{% endif %}
+<meta property="og:url"
+      content="{{ request.url }}">
+<meta property="og:site_name"
+      content="FastAPI StarterPack">
+<meta property="og:locale"
+      content="en_US">
+
+<!-- Twitter -->
+<meta name="twitter:title"
+      content="{{ title }}">
+<meta name="twitter:description"
+      content="{{ seo_description }}">
+{% if seo_image %}
+    <meta name="twitter:image"
+          content="{{ seo_image }}">
+{% endif %}
+
+<meta name="twitter:card"
+      content="summary_large_image">
+<meta name="twitter:creator"
+      content="@your_twitter_handle">
+<meta name="twitter:site"
+      content="@your_twitter_handle">
+
+
+<!-- Security & Performance -->
+{#<meta http-equiv="Content-Security-Policy"#}
+{#      content="#}
+{#        default-src 'self';#}
+{#        img-src 'self' data:;#}
+{#        script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net;#}
+{#        style-src 'self' 'unsafe-inline';#}
+{#        connect-src 'self';#}
+{#        frame-src 'self';#}
+{#        child-src 'self';#}
+{#">#}

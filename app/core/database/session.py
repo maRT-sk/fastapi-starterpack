@@ -3,8 +3,8 @@ from collections.abc import AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from app.core.config.logger import main_logger
 from app.core.database.engine import engine
+from app.core.logging import main_logger
 
 # Create an async session factory
 async_session_maker = sessionmaker(  # type: ignore

@@ -1,6 +1,16 @@
 from importlib import import_module
 from pathlib import Path
 
+from app.core.database import base
+from app.core.database import health
+from app.core.database import repository
+from app.core.database import session
+
+Base = base.Base
+Repository = repository.Repository
+get_session = session.get_session
+check_db_ready = health.check_db_ready
+
 
 # Automatically imports all model files to ensure Alembic can detect ORM models for migrations.
 def import_models_modules() -> None:
@@ -13,3 +23,6 @@ def import_models_modules() -> None:
             )
         except ModuleNotFoundError as e:
             raise ModuleNotFoundError(f"Failed to import {file}. Error: {e}") from e
+
+
+__all__ = ["Base", "Repository", "get_session", "import_models_modules", "check_db_ready"]

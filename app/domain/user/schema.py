@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from pydantic import Field
 from pydantic import field_validator
 
-from app.domain.user.services.auth.security import hash_password
+from app.services.auth.security import hash_password
 
 
 class UserSchema:

@@ -2,14 +2,14 @@ from fastapi import APIRouter
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 
-from app.core import main_templates
+from app.core.templates import renderer
 
 router = APIRouter()
 
 
 @router.get("/", response_class=HTMLResponse)
-async def home(request: Request) -> HTMLResponse:
+async def home_page(request: Request) -> HTMLResponse:
     """
     Home page endpoint that renders an HTML template.
     """
-    return main_templates.TemplateResponse("core/home.html", {"request": request, "title": "Home Page"})
+    return renderer.TemplateResponse("pages/home.html", {"request": request, "description": "Home Page"})

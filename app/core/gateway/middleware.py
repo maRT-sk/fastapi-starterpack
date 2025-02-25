@@ -6,8 +6,8 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.responses import Response
 
-from app.core.config.logger import main_logger
 from app.core.gateway.error_response import create_error_response
+from app.core.logging import main_logger
 
 # === TYPE ALIASES ===
 NextCallable = Callable[[Request], Awaitable[Response]]

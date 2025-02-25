@@ -3,7 +3,7 @@ from datetime import datetime
 
 from fastapi.templating import Jinja2Templates
 
-from app.core.config.versioning import get_version_from_pyproject
+from app.core.utils.versioning import get_version_from_pyproject
 
 
 class TemplateManager:
@@ -58,8 +58,3 @@ class TemplateManager:
         except Exception:
             # TODO: better Exception
             return "UNKNOWN days ago"
-
-
-# Instantiate the TemplateManager and expose it for application-wide use
-template_manager = TemplateManager()
-main_templates = template_manager.templates

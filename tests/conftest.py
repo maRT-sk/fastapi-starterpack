@@ -7,7 +7,7 @@ from typing import Any
 import pytest
 import pytest_asyncio
 
-from app.core import Base
+from app.core.database import Base
 from app.core.database import import_models_modules
 from app.core.database.engine import engine
 from app.core.database.session import async_session_maker

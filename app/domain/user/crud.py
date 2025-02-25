@@ -5,7 +5,7 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core import Repository
+from app.core.database import Repository
 from app.domain.user.exception import UsernameAlreadyExistsError
 from app.domain.user.model import User
 

@@ -118,16 +118,19 @@ This project supports both **SQLite** and **PostgreSQL** as database backends.
 │   │   ├── data/             # Data structures, types, and enumerations
 │   │   ├── database/         # Database layer
 │   │   ├── gateway/          # Middlewares, exception handlers, and API gateway logic
-│   │   ├── lifecycle/        # Application lifecycle management
-│   │   └── rendering/        # Template rendering setup
+│   │   ├── logging/          # Logging configuration and custom logger setup
+│   │   ├── templates/        # Template rendering setup
+│   │   ├── typedefs/         # Custom type definitions (enums, datatypes, exceptions)
+│   │   ├── utils/            # Utility functions and helper modules
+│   │   └── lifecycle/        # Application lifecycle management
 │   ├── domain/               # Encapsulates domain-specific logic
 │   │   └──  module_n/        # Represents a specific domain (e.g., Users, Products)
 │   │       ├── model.py      # Repository pattern implementation for db operations
 │   │       ├── schema.py     # Pydantic schemas for validation and serialization
 │   │       ├── crud.py       # CRUD for repository design pattern
 │   │       ├── enums.py      # Enumerations for structured choices
-│   │       ├── exeptions.py  # Handles domain-specific exceptions
-│   │       └── services/     # Business logic and domain-related services
+│   │       └── exeptions.py  # Handles domain-specific exceptions
+│   ├── services/             # Business logic and service layer functionalities
 │   ├── routes/               # API endpoints and application routes
 │   ├── static/               # Static assets (CSS, JavaScript, images)
 │   └── templates/            # HTML templates (Jinja2)

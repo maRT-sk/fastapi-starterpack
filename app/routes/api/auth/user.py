@@ -5,12 +5,12 @@ from fastapi import Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.authentication import requires
 
-from app.core import get_session
+from app.core.database import get_session
 from app.domain.user.crud import UserRepository
 from app.domain.user.model import User
 from app.domain.user.schema import UserSchema
 
-router = APIRouter()
+router = APIRouter(prefix="/api/auth")
 
 
 @router.post("/users", response_model=UserSchema.Read)

@@ -5,8 +5,8 @@ from fastapi.responses import JSONResponse
 from starlette.datastructures import Headers
 from starlette.responses import Response
 
-from app.core.data.enums import ErrorResponseType
-from app.core.rendering.templates import main_templates
+from app.core.templates import renderer
+from app.core.typedefs.enums import ErrorResponseType
 
 # Default content type used when no valid Content-Type header is provided.
 # Consider moving this to the application settings in future versions to allow easier configuration.
@@ -55,7 +55,7 @@ def create_error_response(
     elif response_type == ErrorResponseType.HTML:
         context = context or {}
         context.update({"request": request, "status_code": status_code, "status_detail": detail})
-        return main_templates.TemplateResponse(template, context, status_code=status_code)
+        return renderer.TemplateResponse(template, context, status_code=status_code)
     else:
         # This should never happen, but ensures safety
         raise ValueError(f"Unhandled response type: {response_type}")
